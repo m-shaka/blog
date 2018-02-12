@@ -1,8 +1,9 @@
 baseURL: http://example.org/
 languageCode: ja
+publishDir: docs
 hasCJKLanguage: true
 pygmentsCodeFences: true
-pygmentsStyle: tango
+pygmentsStyle: manni
 pygmentsCodeFencesGuessSyntax: true
 title: m-shaka's blog
 theme: beautiful
