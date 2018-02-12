@@ -2,21 +2,21 @@
 <rss version="2.0" xmlns:atom="http://www.w3.org/2005/Atom">
   <channel>
     <title>Tags on m-shaka&#39;s blog</title>
-    <link>http://example.org/tags/</link>
+    <link>https://m-shaka.github.io/blog/tags/</link>
     <description>Recent content in Tags on m-shaka&#39;s blog</description>
     <generator>Hugo -- gohugo.io</generator>
     <language>ja</language>
     <lastBuildDate>Mon, 12 Feb 2018 15:34:54 +0900</lastBuildDate>
     
-	<atom:link href="http://example.org/tags/index.xml" rel="self" type="application/rss+xml" />
+	<atom:link href="https://m-shaka.github.io/blog/tags/index.xml" rel="self" type="application/rss+xml" />
     
     
     <item>
       <title>Elm</title>
-      <link>http://example.org/tags/elm/</link>
+      <link>https://m-shaka.github.io/blog/tags/elm/</link>
       <pubDate>Mon, 12 Feb 2018 15:34:54 +0900</pubDate>
       
-      <guid>http://example.org/tags/elm/</guid>
+      <guid>https://m-shaka.github.io/blog/tags/elm/</guid>
       <description></description>
     </item>
     
