@@ -1,0 +1,11 @@
+baseURL: http://example.org/
+languageCode: ja
+hasCJKLanguage: true
+pygmentsCodeFences: true
+pygmentsStyle: tango
+pygmentsCodeFencesGuessSyntax: true
+title: m-shaka's blog
+theme: beautiful
+author:
+  name: m-shaka
+  github: m-shaka
