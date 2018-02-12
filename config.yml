@@ -1,4 +1,5 @@
-baseURL: https://m-shaka.github.io/blog/
+baseURL: https://m-shaka.github.io/blog
+canonifyURLs: true
 languageCode: ja
 publishDir: docs
 hasCJKLanguage: true
