@@ -6,10 +6,19 @@
     <description>Recent content in Post on m-shaka&#39;s blog</description>
     <generator>Hugo -- gohugo.io</generator>
     <language>ja</language>
-    <lastBuildDate>Sat, 17 Feb 2018 13:12:57 +0900</lastBuildDate>
+    <lastBuildDate>Sun, 18 Feb 2018 11:14:03 +0900</lastBuildDate>
     
 	<atom:link href="https://m-shaka.github.io/blog/post/index.xml" rel="self" type="application/rss+xml" />
     
+    
+    <item>
+      <title>ElmのParserライブラリで論理演算(3)</title>
+      <link>https://m-shaka.github.io/blog/post/elm-boolean-parser-3/</link>
+      <pubDate>Sun, 18 Feb 2018 11:14:03 +0900</pubDate>
+      
+      <guid>https://m-shaka.github.io/blog/post/elm-boolean-parser-3/</guid>
+      <description>前回のを公開したら、親切な友人がよりよい（かつ一般的な）実装方法を教えてくれた。 そなたに感謝を。 調べたところ再帰下降構文解析というものらしい</description>
+    </item>
     
     <item>
       <title>ElmのParserライブラリで論理演算(2)</title>
@@ -17,7 +26,7 @@
       <pubDate>Sat, 17 Feb 2018 13:12:57 +0900</pubDate>
       
       <guid>https://m-shaka.github.io/blog/post/elm-boolean-parser-2/</guid>
-      <description>前回は定数と否定まで作った。 今回は連言（論理積）を追加しようと思ったら苦戦したお話。 Termを拡張しよう 前回作ったTerm型の定義に連言を追</description>
+      <description>2018/02/18追記 ここでの実装はあまり一般的なやり方ではないそうなので、苦労の痕跡として捉えて下さい。 こちらで一般的な実装方法を試みて</description>
     </item>
     
     <item>

@@ -5,17 +5,20 @@
   <meta http-equiv="X-UA-Compatible" content="IE=edge">
   <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0">
 
-  <title>m-shaka&#39;s blog</title>
-  <meta property="og:title" content="m-shaka&#39;s blog" />
-  <meta name="twitter:title" content="m-shaka&#39;s blog" />
+  <title>ElmのParserライブラリで論理演算(3)</title>
+  <meta property="og:title" content="ElmのParserライブラリで論理演算(3)" />
+  <meta name="twitter:title" content="ElmのParserライブラリで論理演算(3)" />
+  <meta name="description" content="前回のを公開したら、親切な友人がよりよい（かつ一般的な）実装方法を教えてくれた。 そなたに感謝を。 調べたところ再帰下降構文解析というものらしい">
+  <meta property="og:description" content="前回のを公開したら、親切な友人がよりよい（かつ一般的な）実装方法を教えてくれた。 そなたに感謝を。 調べたところ再帰下降構文解析というものらしい">
+  <meta name="twitter:description" content="前回のを公開したら、親切な友人がよりよい（かつ一般的な）実装方法を教えてくれた。 そなたに感謝を。 調べたところ再帰下降構文解析というものらしい">
   <meta name="author" content="m-shaka"/>
   <meta name="twitter:card" content="summary" />
-  <meta property="og:url" content="https://m-shaka.github.io/" />
+  <meta property="og:url" content="https://m-shaka.github.io/post/elm-boolean-parser-3/" />
   <meta property="og:type" content="website" />
   <meta property="og:site_name" content="m-shaka&#39;s blog" />
 
   <meta name="generator" content="Hugo 0.36" />
-  <link rel="canonical" href="https://m-shaka.github.io/" />
+  <link rel="canonical" href="https://m-shaka.github.io/post/elm-boolean-parser-3/" />
   <link rel="alternate" href="https://m-shaka.github.io/blog/index.xml" type="application/rss+xml" title="m-shaka&#39;s blog">
   <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/KaTeX/0.7.1/katex.min.css" integrity="sha384-wITovz90syo1dJWVh32uuETPVEtGigN07tkttEqPv+uR2SE/mbQcG7ATL28aI9H0" crossorigin="anonymous">
   <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/font-awesome/4.7.0/css/font-awesome.min.css" integrity="sha384-wvfXpqpZZVQGK6TAh5PVlGOfQNHSoD2xbE+QkPxCAFlNEevoEH3Sl0sibVcOQVnN" crossorigin="anonymous">
@@ -140,9 +143,20 @@
       <div class="container">
         <div class="row">
           <div class="col-lg-8 col-lg-offset-2 col-md-10 col-md-offset-1">
-            <div class="page-heading">
-              <h1>m-shaka&#39;s blog</h1>
+            <div class="post-heading">
+              <h1>ElmのParserライブラリで論理演算(3)</h1>
                 
+                
+                  <span class="post-meta">
+  
+  
+  <i class="fa fa-calendar-o"></i>&nbsp;Posted on February 18, 2018
+  
+  
+  
+</span>
+
+
                 
             </div>
           </div>
@@ -153,119 +167,75 @@
 
 
     
-  <div role="main" class="container">
-    <div class="row">
-      <div class="col-lg-8 col-lg-offset-2 col-md-10 col-md-offset-1">
-        
+<div class="container" role="main">
+  <div class="row">
+    <div class="col-lg-8 col-lg-offset-2 col-md-10 col-md-offset-1">
+      <article role="main" class="blog-post">
+        <p>前回のを公開したら、親切な友人がよりよい（かつ一般的な）実装方法を教えてくれた。
+そなたに感謝を。
+調べたところ<a href="https://ja.wikipedia.org/wiki/%E5%86%8D%E5%B8%B0%E4%B8%8B%E9%99%8D%E6%A7%8B%E6%96%87%E8%A7%A3%E6%9E%90">再帰下降構文解析</a>というものらしい。</p>
 
-        <div class="posts-list">
+<p>BNFで書くと多分こんな感じになる。</p>
+<div class="highlight"><pre style="background-color:#f0f3f3;-moz-tab-size:4;-o-tab-size:4;tab-size:4">&lt;additiveExpr&gt; ::= &lt;multiplicativeExpr&gt; [ &#39;||&#39; &lt;additiveExpr&gt; ]*  ## 式の本体
+&lt;multiplicativeExpr&gt; ::= &lt;factor&gt; [ &#39;&amp;&amp;&#39; &lt;multiplicativeExpr&gt; ]*
+&lt;factor&gt; ::= &#39;(&#39; &lt;additiveExpr&gt; &#39;)&#39; | &lt;base&gt;
+&lt;base&gt; ::= &#39;T&#39; | &#39;F&#39; | &#39;!&#39;&lt;factor&gt;</pre></div>
+<p>日本語で書くとこうかしら。</p>
+
+<dl class='dl-horizontal'>
+  <dt>additiveExpr</dt>
+  <dd>multiplicativeExprか、それとadditiveExprの和</dd>
+  <dt>multiplicativeExpr</dt>
+  <dd>factorか、それとmultiplicativeExprの積</dd>
+  <dt>factor</dt>
+  <dd>括弧でくくられたadditiveExprかbase</dd>
+  <dt>base</dt>
+  <dd>TかFかfactorの否定</dd>
+</dl>
+
+<p>公開していた<a href="https://m-shaka.github.io/boolean-parser-elm/">デモページ</a>の方もこちらの実装に直したので、githubから直にソースコードを埋め込む<sup class="footnote-ref" id="fnref:1"><a rel="footnote" href="#fn:1">1</a></sup>。</p>
+
+<script src="http://gist-it.appspot.com/https://github.com/m-shaka/boolean-parser-elm/blob/master/src/BooleanParser.elm?slice=2:86"></script>
+
+<p>パーサー本体はadditiveExprだが、前後に空白を許容するのと、式のあとに不適切な文字列が入った時に（&rdquo;T hoge&rdquo;とか）failするように<code>.| end</code>で文字列の終了を要求するためにexprでラップしている。
+関数の定義が相互参照しまくりなので最初は戸惑ったが、Parser.lazyで遅延評価にしてやるとコンパイルが通る<sup class="footnote-ref" id="fnref:2"><a rel="footnote" href="#fn:2">2</a></sup>。
+あとついでに否定を&rdquo;not&rdquo;から&rdquo;!&ldquo;に直した。</p>
+
+<p>この実装でよいなと思ったのは、演算の優先度が規定されるという点だ。
+括弧で順番を明示しない限り、かならず和より積が、積より否定が優先される。</p>
+
+<p>これで論理和と括弧表記にもきれいに対応できた。うれぴよ。</p>
+<div class="footnotes">
+
+<hr />
+
+<ol>
+<li id="fn:1">gist-itというサービスを使う。知らんかった
+ <a class="footnote-return" href="#fnref:1"><sup>[return]</sup></a></li>
+<li id="fn:2">Elmは見た目はHaskellだけどデフォルトでは正格評価。
+ <a class="footnote-return" href="#fnref:2"><sup>[return]</sup></a></li>
+</ol>
+</div>
+
+      </article>
+
+      
+        <ul class="pager blog-pager">
+          
+            <li class="previous">
+              <a href="https://m-shaka.github.io/blog/post/elm-boolean-parser-2/" data-toggle="tooltip" data-placement="top" title="ElmのParserライブラリで論理演算(2)">&larr; Previous Post</a>
+            </li>
           
           
-            <article class="post-preview">
-              <a href="https://m-shaka.github.io/blog/post/elm-boolean-parser-3/">
-                <h2 class="post-title">ElmのParserライブラリで論理演算(3)</h2>
-                
-                
-              </a>
-
-              <span class="post-meta">
-  
-  
-  <i class="fa fa-calendar-o"></i>&nbsp;Posted on February 18, 2018
-  
-  
-  
-</span>
+        </ul>
+      
 
 
-              <div class="post-entry">
-                
-                  前回のを公開したら、親切な友人がよりよい（かつ一般的な）実装方法を教えてくれた。 そなたに感謝を。 調べたところ再帰下降構文解析というものらしい
-                  <a href="https://m-shaka.github.io/blog/post/elm-boolean-parser-3/" class="post-read-more">[Read More]</a>
-                
-              </div>
+      
 
-              
-                <span class="post-meta">
-                
-                  #<a href="https://m-shaka.github.io/blog/tags/elm/">Elm</a>&nbsp;
-                
-                </span>
-              
-            </article>
-          
-            <article class="post-preview">
-              <a href="https://m-shaka.github.io/blog/post/elm-boolean-parser-2/">
-                <h2 class="post-title">ElmのParserライブラリで論理演算(2)</h2>
-                
-                
-              </a>
-
-              <span class="post-meta">
-  
-  
-  <i class="fa fa-calendar-o"></i>&nbsp;Posted on February 17, 2018
-  
-  
-  
-</span>
-
-
-              <div class="post-entry">
-                
-                  2018/02/18追記 ここでの実装はあまり一般的なやり方ではないそうなので、苦労の痕跡として捉えて下さい。 こちらで一般的な実装方法を試みて
-                  <a href="https://m-shaka.github.io/blog/post/elm-boolean-parser-2/" class="post-read-more">[Read More]</a>
-                
-              </div>
-
-              
-                <span class="post-meta">
-                
-                  #<a href="https://m-shaka.github.io/blog/tags/elm/">Elm</a>&nbsp;
-                
-                </span>
-              
-            </article>
-          
-            <article class="post-preview">
-              <a href="https://m-shaka.github.io/blog/post/elm-boolean-parser-1/">
-                <h2 class="post-title">ElmのParserライブラリで論理演算(1)</h2>
-                
-                
-              </a>
-
-              <span class="post-meta">
-  
-  
-  <i class="fa fa-calendar-o"></i>&nbsp;Posted on February 12, 2018
-  
-  
-  
-</span>
-
-
-              <div class="post-entry">
-                
-                  Elmの練習とパーサーに親しむのを兼ねて、論理演算のためのパーサーを作ってみた。 パーサーの知識が無であるため無駄な実装をしている可能性が大き
-                  <a href="https://m-shaka.github.io/blog/post/elm-boolean-parser-1/" class="post-read-more">[Read More]</a>
-                
-              </div>
-
-              
-                <span class="post-meta">
-                
-                  #<a href="https://m-shaka.github.io/blog/tags/elm/">Elm</a>&nbsp;
-                
-                </span>
-              
-            </article>
-          
-        </div>
-
-        
-      </div>
     </div>
   </div>
+</div>
 
     <footer>
   <div class="container">
