@@ -34,7 +34,7 @@ BNFで書くと多分こんな感じになる。
 
 [^1]: gist-itというサービスを使う。知らんかった
 
-<script src="http://gist-it.appspot.com/https://github.com/m-shaka/boolean-parser-elm/blob/master/src/BooleanParser.elm?slice=2:86"></script>
+<script src="https://gist-it.appspot.com/https://github.com/m-shaka/boolean-parser-elm/blob/master/src/BooleanParser.elm?slice=2:86"></script>
 
 パーサー本体はadditiveExprだが、前後に空白を許容するのと、式のあとに不適切な文字列が入った時に（"T hoge"とか）failするように`.| end`で文字列の終了を要求するためにexprでラップしている。
 関数の定義が相互参照しまくりなので最初は戸惑ったが、Parser.lazyで遅延評価にしてやるとコンパイルが通る[^2]。

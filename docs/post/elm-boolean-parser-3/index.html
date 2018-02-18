@@ -195,7 +195,7 @@
 
 <p>公開していた<a href="https://m-shaka.github.io/boolean-parser-elm/">デモページ</a>の方もこちらの実装に直したので、githubから直にソースコードを埋め込む<sup class="footnote-ref" id="fnref:1"><a rel="footnote" href="#fn:1">1</a></sup>。</p>
 
-<script src="http://gist-it.appspot.com/https://github.com/m-shaka/boolean-parser-elm/blob/master/src/BooleanParser.elm?slice=2:86"></script>
+<script src="https://gist-it.appspot.com/https://github.com/m-shaka/boolean-parser-elm/blob/master/src/BooleanParser.elm?slice=2:86"></script>
 
 <p>パーサー本体はadditiveExprだが、前後に空白を許容するのと、式のあとに不適切な文字列が入った時に（&rdquo;T hoge&rdquo;とか）failするように<code>.| end</code>で文字列の終了を要求するためにexprでラップしている。
 関数の定義が相互参照しまくりなので最初は戸惑ったが、Parser.lazyで遅延評価にしてやるとコンパイルが通る<sup class="footnote-ref" id="fnref:2"><a rel="footnote" href="#fn:2">2</a></sup>。
