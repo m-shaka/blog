@@ -12,12 +12,12 @@
     
     
     <item>
-      <title>Elmでモジュール分割</title>
+      <title>Elmでviewを分割</title>
       <link>https://m-shaka.github.io/blog/post/elm-modulization/</link>
       <pubDate>Sun, 22 Apr 2018 19:02:53 +0900</pubDate>
       
       <guid>https://m-shaka.github.io/blog/post/elm-modulization/</guid>
-      <description>Elmでアーキテクチャを入れ子にするのにちょっとひと工夫必要だったのだけど、これに関して日本語での情報があまり見当たらなかったので残しておく</description>
+      <description>アーキテクチャを複数のファイルに切り分けて入れ子にするのにちょっとひと工夫必要だったのだけど、これに関して日本語での情報があまり見当たらなか</description>
     </item>
     
     <item>
