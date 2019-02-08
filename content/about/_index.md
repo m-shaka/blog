@@ -2,4 +2,8 @@
 title: "About"
 menu: "main"
 ---
-仕事ではPython, JavaScriptが主。JSが嫌すぎるのでElmに手を出す。
+Webエンジニア。Python, Kotlin, Elm, TypeScriptなど。Scala, OCaml, Haskellもチョトデキル。
+
+論理学や代数、圏論なども嗜む程度には。
+
+Twitterはフッターから。
