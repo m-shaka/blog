@@ -1,0 +1,403 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+  <meta charset="utf-8" />
+  <meta http-equiv="X-UA-Compatible" content="IE=edge">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0">
+
+  <title>ElmのParserライブラリで論理演算(2)</title>
+  <meta property="og:title" content="ElmのParserライブラリで論理演算(2)" />
+  <meta name="twitter:title" content="ElmのParserライブラリで論理演算(2)" />
+  <meta name="description" content="2018/02/18追記 ここでの実装はあまり一般的なやり方ではないそうなので、苦労の痕跡として捉えて下さい。 こちらで一般的な実装方法を試みて">
+  <meta property="og:description" content="2018/02/18追記 ここでの実装はあまり一般的なやり方ではないそうなので、苦労の痕跡として捉えて下さい。 こちらで一般的な実装方法を試みて">
+  <meta name="twitter:description" content="2018/02/18追記 ここでの実装はあまり一般的なやり方ではないそうなので、苦労の痕跡として捉えて下さい。 こちらで一般的な実装方法を試みて">
+  <meta name="author" content="m-shaka"/>
+  <meta name="twitter:card" content="summary" />
+  <meta name="twitter:site" content="@schwer_metall" />
+  <meta name="twitter:creator" content="@schwer_metall" />
+  <meta property="og:url" content="https://m-shaka.github.io/post/2018/02/elm-boolean-parser-2/" />
+  <meta property="og:type" content="website" />
+  <meta property="og:site_name" content="m-shaka&#39;s blog" />
+
+  <meta name="generator" content="Hugo 0.36" />
+  <link rel="canonical" href="https://m-shaka.github.io/post/2018/02/elm-boolean-parser-2/" />
+  <link rel="alternate" href="https://m-shaka.github.io/blog/index.xml" type="application/rss+xml" title="m-shaka&#39;s blog">
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/KaTeX/0.7.1/katex.min.css" integrity="sha384-wITovz90syo1dJWVh32uuETPVEtGigN07tkttEqPv+uR2SE/mbQcG7ATL28aI9H0" crossorigin="anonymous">
+  <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/font-awesome/4.7.0/css/font-awesome.min.css" integrity="sha384-wvfXpqpZZVQGK6TAh5PVlGOfQNHSoD2xbE+QkPxCAFlNEevoEH3Sl0sibVcOQVnN" crossorigin="anonymous">
+  <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/css/bootstrap.min.css" integrity="sha384-BVYiiSIFeK1dGmJRAkycuHAHRg32OmUcww7on3RYdg4Va+PmSTsz/K68vbdEjh4u" crossorigin="anonymous">
+  <link rel="stylesheet" href="https://m-shaka.github.io/blog/css/main.css" /><link rel="stylesheet" href="https://fonts.googleapis.com/css?family=Lora:400,700,400italic,700italic" />
+  <link rel="stylesheet" href="https://fonts.googleapis.com/css?family=Open+Sans:300italic,400italic,600italic,700italic,800italic,400,300,600,700,800" /><link rel="stylesheet" href="https://m-shaka.github.io/blog/css/syntax.css" /><link rel="stylesheet" href="https://m-shaka.github.io/blog/css/codeblock.css" />
+
+
+
+<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/photoswipe/4.1.2/photoswipe.min.css" integrity="sha384-h/L2W9KefUClHWaty3SLE5F/qvc4djlyR4qY3NUV5HGQBBW7stbcfff1+I/vmsHh" crossorigin="anonymous">
+<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/photoswipe/4.1.2/default-skin/default-skin.min.css" integrity="sha384-iD0dNku6PYSIQLyfTOpB06F2KCZJAKLOThS5HRe8b3ibhdEQ6eKsFf/EeFxdOt5R" crossorigin="anonymous">
+
+
+
+<div class="pswp" tabindex="-1" role="dialog" aria-hidden="true">
+
+<div class="pswp__bg"></div>
+
+<div class="pswp__scroll-wrap">
+    
+    <div class="pswp__container">
+      <div class="pswp__item"></div>
+      <div class="pswp__item"></div>
+      <div class="pswp__item"></div>
+    </div>
+    
+    <div class="pswp__ui pswp__ui--hidden">
+    <div class="pswp__top-bar">
+      
+      <div class="pswp__counter"></div>
+      <button class="pswp__button pswp__button--close" title="Close (Esc)"></button>
+      <button class="pswp__button pswp__button--share" title="Share"></button>
+      <button class="pswp__button pswp__button--fs" title="Toggle fullscreen"></button>
+      <button class="pswp__button pswp__button--zoom" title="Zoom in/out"></button>
+      
+      
+      <div class="pswp__preloader">
+        <div class="pswp__preloader__icn">
+          <div class="pswp__preloader__cut">
+            <div class="pswp__preloader__donut"></div>
+          </div>
+        </div>
+      </div>
+    </div>
+    <div class="pswp__share-modal pswp__share-modal--hidden pswp__single-tap">
+      <div class="pswp__share-tooltip"></div>
+    </div>
+    <button class="pswp__button pswp__button--arrow--left" title="Previous (arrow left)">
+    </button>
+    <button class="pswp__button pswp__button--arrow--right" title="Next (arrow right)">
+    </button>
+    <div class="pswp__caption">
+      <div class="pswp__caption__center"></div>
+    </div>
+    </div>
+    </div>
+</div>
+
+</head>
+
+  <body>
+    <nav class="navbar navbar-default navbar-fixed-top navbar-custom">
+  <div class="container-fluid">
+    <div class="navbar-header">
+      <button type="button" class="navbar-toggle" data-toggle="collapse" data-target="#main-navbar">
+        <span class="sr-only">Toggle navigation</span>
+        <span class="icon-bar"></span>
+        <span class="icon-bar"></span>
+        <span class="icon-bar"></span>
+      </button>
+      <a class="navbar-brand" href="https://m-shaka.github.io/blog">m-shaka&#39;s blog</a>
+    </div>
+
+    <div class="collapse navbar-collapse" id="main-navbar">
+      <ul class="nav navbar-nav navbar-right">
+        
+          
+            <li>
+              <a title="Post" href="https://m-shaka.github.io/blog/post/">Post</a>
+            </li>
+          
+        
+          
+            <li>
+              <a title="About" href="https://m-shaka.github.io/blog/about/">About</a>
+            </li>
+          
+        
+
+        
+
+        
+      </ul>
+    </div>
+
+    <div class="avatar-container">
+      <div class="avatar-img-border">
+        
+      </div>
+    </div>
+
+  </div>
+</nav>
+
+
+
+
+    
+  
+  
+  
+
+
+
+
+  
+
+  <header class="header-section ">
+    
+    <div class="intro-header no-img">
+      
+      <div class="container">
+        <div class="row">
+          <div class="col-lg-8 col-lg-offset-2 col-md-10 col-md-offset-1">
+            <div class="post-heading">
+              <h1>ElmのParserライブラリで論理演算(2)</h1>
+                
+                
+                  <span class="post-meta">
+  
+  
+  <i class="fa fa-calendar-o"></i>&nbsp;Posted on February 17, 2018
+  
+  
+  
+</span>
+
+
+                
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </header>
+
+
+    
+<div class="container" role="main">
+  <div class="row">
+    <div class="col-lg-8 col-lg-offset-2 col-md-10 col-md-offset-1">
+      <article role="main" class="blog-post">
+        
+
+<h3 id="2018-02-18追記">2018/02/18追記</h3>
+
+<p>ここでの実装はあまり一般的なやり方ではないそうなので、苦労の痕跡として捉えて下さい。
+<a href="https://m-shaka.github.io/blog/post/elm-boolean-parser-3">こちら</a>で一般的な実装方法を試みています。</p>
+
+<p><a href="https://m-shaka.github.io/blog/post/elm-boolean-parser-1">前回</a>は定数と否定まで作った。
+今回は連言（論理積）を追加しようと思ったら苦戦したお話。</p>
+
+<h2 id="termを拡張しよう">Termを拡張しよう</h2>
+
+<p>前回作ったTerm型の定義に連言を追加する。</p>
+<div class="highlight"><pre style="background-color:#f0f3f3;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-elm" data-lang="elm"><span style="color:#069;font-weight:bold">type</span> <span style="color:#078;font-weight:bold">Term</span> <span style="color:#c0f">=</span>
+  <span style="color:#078;font-weight:bold">T</span>
+  <span style="color:#c0f">|</span> <span style="color:#078;font-weight:bold">F</span>
+  <span style="color:#c0f">|</span> <span style="color:#078;font-weight:bold">Not</span> <span style="color:#078;font-weight:bold">Term</span>
+  <span style="color:#c0f">|</span> <span style="color:#078;font-weight:bold">And</span> <span style="color:#078;font-weight:bold">Term</span> <span style="color:#078;font-weight:bold">Term</span> <span style="color:#09f;font-style:italic">-- 追加分</span></code></pre></div>
+<p>連言は2つの項を受け取るので、定義上でも引数を2つ受け取るコンストラクタになる。
+ここまでは無問題。</p>
+
+<h2 id="パーサーの拡張">パーサーの拡張</h2>
+
+<p>連言を表すシンボルには&rdquo;&amp;&amp;&ldquo;を採用する。
+プログラミング言語では一般的<sup class="footnote-ref" id="fnref:1"><a rel="footnote" href="#fn:1">1</a></sup>。
+まずは深く考えず以下のように拡張してみた。</p>
+<div class="highlight"><pre style="background-color:#f0f3f3;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-elm" data-lang="elm"><span style="color:#069;font-weight:bold">import </span><span style="color:#0a8;font-weight:bold">Parser</span> <span style="color:#033">exposing</span> <span style="color:#c0f">(..)</span>
+
+<span style="color:#033">term</span><span style="color:#c0f">:</span> <span style="color:#078;font-weight:bold">Parser</span> <span style="color:#078;font-weight:bold">Term</span>
+<span style="color:#033">term</span> <span style="color:#c0f">=</span>
+    <span style="color:#033">oneOf</span>
+        [<span style="color:#033">succeed</span> <span style="color:#078;font-weight:bold">T</span>
+            <span style="color:#c0f">|.</span> <span style="color:#033">keyword</span> <span style="color:#c30">&#34;T&#34;</span>
+        , <span style="color:#033">succeed</span> <span style="color:#078;font-weight:bold">F</span>
+            <span style="color:#c0f">|.</span> <span style="color:#033">keyword</span> <span style="color:#c30">&#34;F&#34;</span>
+        , <span style="color:#033">succeed</span> <span style="color:#078;font-weight:bold">Not</span>
+            <span style="color:#c0f">|.</span> <span style="color:#033">keyword</span> <span style="color:#c30">&#34;not&#34;</span>
+            <span style="color:#c0f">|.</span> <span style="color:#033">spaces</span>
+            <span style="color:#c0f">|=</span> <span style="color:#033">lazy</span> (<span style="color:#c0f">\</span><span style="color:#033">_</span> <span style="color:#c0f">-&gt;</span> <span style="color:#033">term</span>)
+        <span style="color:#09f;font-style:italic">-- ここから連言</span>
+        , <span style="color:#033">succeed</span> <span style="color:#078;font-weight:bold">And</span>
+            <span style="color:#c0f">|=</span> <span style="color:#033">lazy</span> (<span style="color:#c0f">\</span><span style="color:#033">_</span> <span style="color:#c0f">-&gt;</span> <span style="color:#033">term</span>)
+            <span style="color:#c0f">|.</span> <span style="color:#033">spaces</span>
+            <span style="color:#c0f">|.</span> <span style="color:#033">symbol</span> <span style="color:#c30">&#34;&amp;&amp;&#34;</span>
+            <span style="color:#c0f">|.</span> <span style="color:#033">spaces</span>
+            <span style="color:#c0f">|=</span> <span style="color:#033">lazy</span> (<span style="color:#c0f">\</span><span style="color:#033">_</span> <span style="color:#c0f">-&gt;</span> <span style="color:#033">term</span>)
+        ]</code></pre></div>
+<p>2つの項の間に&rdquo;&amp;&amp;&ldquo;が挟まる自然なかたち。</p>
+
+<p>しかしこれはうまくいかない。
+というのも、パーサーは与えられた文字列を左から走査していくのだが、まず一文字目の&rdquo;T&rdquo;を受け取った時点で<code>T</code>としてのパースに成功してしまうからだ（Fでも同様）。</p>
+
+<p>では、oneOfは引数で受け取ったパーサーリストの先頭からパースできるか試していくのだから、リストの先頭に連言を置けばいいのではと思うかもしれない。
+ところがこれも失敗に終わる。
+無限ループに陥るのである。</p>
+
+<p>&ldquo;T &amp;&amp; T&rdquo;という文字列を与えたとしよう。
+パーサーは、まずAndでのパースを試みる。
+文字列の先頭の&rdquo;T&rdquo;を受け取った時、<code>lazy (\_ -&gt; term)</code>によりこの&rdquo;T&rdquo;に対しまたtermパーサーが走る。
+すると今度は&rdquo;T&rdquo;に対してAndのパースが実行され、以下はそれの繰り返しになってプログラムが終了しなくなってしまうのだ。</p>
+
+<h2 id="の前後で処理を分割する">&amp;&amp;の前後で処理を分割する</h2>
+
+<p>そこで筆者が思いついた解決策はこうだ。</p>
+
+<ol>
+<li>まず、T, F, Not Termのいずれかとしてパースする</li>
+<li>その後に&rdquo;&amp;&amp;&ldquo;が続けばAndとして解釈し、空白で終わればそのまま終了する</li>
+</ol>
+<div class="highlight"><pre style="background-color:#f0f3f3;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-elm" data-lang="elm"><span style="color:#033">term</span> <span style="color:#c0f">:</span> <span style="color:#078;font-weight:bold">Parser</span> <span style="color:#078;font-weight:bold">Term</span>
+<span style="color:#033">term</span> <span style="color:#c0f">=</span>
+    <span style="color:#069;font-weight:bold">let</span>
+        <span style="color:#033">true</span> <span style="color:#c0f">=</span>
+            <span style="color:#033">succeed</span> <span style="color:#078;font-weight:bold">T</span> <span style="color:#c0f">|.</span> <span style="color:#033">keyword</span> <span style="color:#c30">&#34;T&#34;</span>
+
+        <span style="color:#033">false</span> <span style="color:#c0f">=</span>
+            <span style="color:#033">succeed</span> <span style="color:#078;font-weight:bold">F</span> <span style="color:#c0f">|.</span> <span style="color:#033">keyword</span> <span style="color:#c30">&#34;F&#34;</span>
+
+        <span style="color:#033">not_</span> <span style="color:#c0f">=</span>
+            <span style="color:#033">succeed</span> <span style="color:#078;font-weight:bold">Not</span>
+                <span style="color:#c0f">|.</span> <span style="color:#033">keyword</span> <span style="color:#c30">&#34;not&#34;</span>
+                <span style="color:#c0f">|.</span> <span style="color:#033">spaces</span>
+                <span style="color:#c0f">|=</span> <span style="color:#033">oneOf</span> [ <span style="color:#033">true</span>, <span style="color:#033">false</span>, <span style="color:#033">lazy</span> (<span style="color:#c0f">\</span><span style="color:#033">_</span> <span style="color:#c0f">-&gt;</span> <span style="color:#033">not_</span>) ]
+    <span style="color:#069;font-weight:bold">in</span>
+        <span style="color:#033">succeed</span> <span style="color:#033">identity</span>
+            <span style="color:#c0f">|=</span> <span style="color:#033">oneOf</span> [ <span style="color:#033">true</span>, <span style="color:#033">false</span>, <span style="color:#033">not_</span> ]
+            <span style="color:#c0f">|.</span> <span style="color:#033">spaces</span>
+            <span style="color:#c0f">|&gt;</span> <span style="color:#033">andThen</span>
+                (<span style="color:#c0f">\</span><span style="color:#033">t</span> <span style="color:#c0f">-&gt;</span>
+                    <span style="color:#033">oneOf</span>
+                        [ <span style="color:#033">succeed</span> (<span style="color:#078;font-weight:bold">And</span> <span style="color:#033">t</span>)
+                            <span style="color:#c0f">|.</span> <span style="color:#033">symbol</span> <span style="color:#c30">&#34;&amp;&amp;&#34;</span>
+                            <span style="color:#c0f">|.</span> <span style="color:#033">spaces</span>
+                            <span style="color:#c0f">|=</span> <span style="color:#033">lazy</span> (<span style="color:#c0f">\</span><span style="color:#033">_</span> <span style="color:#c0f">-&gt;</span> <span style="color:#033">term</span>)
+                        , <span style="color:#033">succeed</span> <span style="color:#033">t</span>
+                            <span style="color:#c0f">|.</span> <span style="color:#033">spaces</span>
+                        ]
+                )</code></pre></div>
+<p>既存コードへの変更点としては、基底形と否定は複数回使うのでローカル変数に束縛している。
+否定については中身にも若干の変更を加えた。
+否定の引数には<strong>T, F, Not Termのいずれか</strong>が入るようにしてある。
+こうしておかないと&rdquo;not T &amp;&amp; T&rdquo;が<code>Not (And T T)</code>とパースされてしまうが、選言自体の否定なら&rdquo;not (T &amp;&amp; T)&ldquo;と対応させるのが自然だろう。
+これを避けるために、さしあたっては否定を選言以外の項を受け取るように制限する<sup class="footnote-ref" id="fnref:2"><a rel="footnote" href="#fn:2">2</a></sup>。</p>
+
+<p>真理値ないし否定形としてパースした値を<code>andThen</code>に渡す（以下は型定義）。</p>
+<div class="highlight"><pre style="background-color:#f0f3f3;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-elm" data-lang="elm"><span style="color:#033">andThen</span> <span style="color:#c0f">:</span> (<span style="color:#033">a</span> <span style="color:#c0f">-&gt;</span> <span style="color:#078;font-weight:bold">Parser</span> <span style="color:#033">b</span>) <span style="color:#c0f">-&gt;</span> <span style="color:#078;font-weight:bold">Parser</span> <span style="color:#033">a</span> <span style="color:#c0f">-&gt;</span> <span style="color:#078;font-weight:bold">Parser</span> <span style="color:#033">b</span></code></pre></div>
+<p>型定義からもわかるように、andThenは任意の型A, Bについて、Aの値を受け取ってBのパーサーを返すコールバック関数と、Aのパーサーを受け取る。
+コールバック関数が担っているのは、先に述べた手順の2つ目の処理だ。
+<code>|= oneOf [ true, false, not_ ]</code>でパースした値はコールバック関数に渡され、続く文字列が&rdquo;&amp;&amp;&ldquo;ならばAndとして、空白ならばそのまま返される<sup class="footnote-ref" id="fnref:3"><a rel="footnote" href="#fn:3">3</a></sup>。</p>
+
+<p>駆け足になったが、以上で連言のパースになんとか成功した。
+選言も全く同様にパースできることは明らかだと思うので説明は不要でしょう。
+また、これが最適解かもわからないのでよりよい実装があれば教えて頂きたい。</p>
+
+<p>次回は括弧表記に対応して完結予定。
+括弧を導入すると選言の否定が出来るようになる。</p>
+<div class="footnotes">
+
+<hr />
+
+<ol>
+<li id="fn:1">なら否定も&rdquo;!&ldquo;にして統一しろよという。雑さが伺える
+ <a class="footnote-return" href="#fnref:1"><sup>[return]</sup></a></li>
+<li id="fn:2">もちろんTermの定義上は任意の項を受け取れるようにしなければならないが、そのためには括弧を導入した方がよいので今回は目を瞑る
+ <a class="footnote-return" href="#fnref:2"><sup>[return]</sup></a></li>
+<li id="fn:3"><code>identity</code>は組み込み関数で、要するに恒等写像。 また<code>(And t)</code>は部分適用。
+ <a class="footnote-return" href="#fnref:3"><sup>[return]</sup></a></li>
+</ol>
+</div>
+
+      </article>
+
+      
+        <ul class="pager blog-pager">
+          
+            <li class="previous">
+              <a href="https://m-shaka.github.io/blog/post/2018/02/elm-boolean-parser-1/" data-toggle="tooltip" data-placement="top" title="ElmのParserライブラリで論理演算(1)">&larr; Previous Post</a>
+            </li>
+          
+          
+            <li class="next">
+              <a href="https://m-shaka.github.io/blog/post/2018/02/elm-boolean-parser-3/" data-toggle="tooltip" data-placement="top" title="ElmのParserライブラリで論理演算(3)">Next Post &rarr;</a>
+            </li>
+          
+        </ul>
+      
+
+
+      
+
+    </div>
+  </div>
+</div>
+
+    <footer>
+  <div class="container">
+    <div class="row">
+      <div class="col-lg-8 col-lg-offset-2 col-md-10 col-md-offset-1">
+        <ul class="list-inline text-center footer-links">
+          
+              <li>
+                <a href="https://github.com/m-shaka" title="GitHub">
+                  <span class="fa-stack fa-lg">
+                    <i class="fa fa-circle fa-stack-2x"></i>
+                    <i class="fa fa-github fa-stack-1x fa-inverse"></i>
+                  </span>
+                </a>
+              </li>
+              <li>
+                <a href="https://twitter.com/schwer_metall" title="Twitter">
+                  <span class="fa-stack fa-lg">
+                    <i class="fa fa-circle fa-stack-2x"></i>
+                    <i class="fa fa-twitter fa-stack-1x fa-inverse"></i>
+                  </span>
+                </a>
+              </li>
+          
+        </ul>
+        <p class="credits copyright text-muted">
+          
+            
+              m-shaka
+            
+          
+
+          &nbsp;&bull;&nbsp;
+          2019
+
+          
+            &nbsp;&bull;&nbsp;
+            <a href="https://m-shaka.github.io/blog">m-shaka&#39;s blog</a>
+          
+        </p>
+        
+        <p class="credits theme-by text-muted">
+          <a href="http://gohugo.io">Hugo v0.36</a> powered &nbsp;&bull;&nbsp; Theme by <a href="http://deanattali.com/beautiful-jekyll/">Beautiful Jekyll</a> adapted to <a href="https://github.com/halogenica/beautifulhugo">Beautiful Hugo</a>
+          
+        </p>
+      </div>
+    </div>
+  </div>
+</footer>
+
+<script src="https://cdnjs.cloudflare.com/ajax/libs/KaTeX/0.7.1/katex.min.js" integrity="sha384-/y1Nn9+QQAipbNQWU65krzJralCnuOasHncUFXGkdwntGeSvQicrYkiUBwsgUqc1" crossorigin="anonymous"></script>
+<script src="https://cdnjs.cloudflare.com/ajax/libs/KaTeX/0.7.1/contrib/auto-render.min.js" integrity="sha384-dq1/gEHSxPZQ7DdrM82ID4YVol9BYyU7GbWlIwnwyPzotpoc57wDw/guX8EaYGPx" crossorigin="anonymous"></script>
+<script src="https://code.jquery.com/jquery-1.12.4.min.js" integrity="sha256-ZosEbRLbNQzLpnKIkEdrPv7lOy9C27hHQ+Xp8a4MxAQ=" crossorigin="anonymous"></script>
+<script src="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/js/bootstrap.min.js" integrity="sha384-Tc5IQib027qvyjSMfHjOMaLkfuWVxZxUPnCJA7l2mCWNIpG9mGCD8wGNIcPD7Txa" crossorigin="anonymous"></script>
+<script src="https://m-shaka.github.io/blog/js/main.js"></script><script> renderMathInElement(document.body); </script>
+<script src="https://cdnjs.cloudflare.com/ajax/libs/photoswipe/4.1.2/photoswipe.min.js" integrity="sha384-QELNnmcmU8IR9ZAykt67vGr9/rZJdHbiWi64V88fCPaOohUlHCqUD/unNN0BXSqy" crossorigin="anonymous"></script>
+<script src="https://cdnjs.cloudflare.com/ajax/libs/photoswipe/4.1.2/photoswipe-ui-default.min.js" integrity="sha384-m67o7SkQ1ALzKZIFh4CiTA8tmadaujiTa9Vu+nqPSwDOqHrDmxLezTdFln8077+q" crossorigin="anonymous"></script>
+<script src="https://m-shaka.github.io/blog/js/load-photoswipe.js"></script>
+
+
+
+<script type="text/x-mathjax-config">
+  MathJax.Hub.Config({
+      tex2jax: { inlineMath: [['$','$'], ["\\(","\\)"]] }
+  });
+</script>
+<script
+    type="text/javascript"
+    src="https://cdn.mathjax.org/mathjax/latest/MathJax.js?config=TeX-AMS-MML_HTMLorMML" />
+</script>
+
+
+  </body>
+</html>
+
