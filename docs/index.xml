@@ -6,44 +6,53 @@
     <description>Recent content on m-shaka&#39;s blog</description>
     <generator>Hugo -- gohugo.io</generator>
     <language>ja</language>
-    <lastBuildDate>Sun, 22 Apr 2018 19:02:53 +0900</lastBuildDate>
+    <lastBuildDate>Fri, 08 Feb 2019 22:24:27 +0900</lastBuildDate>
     
 	<atom:link href="https://m-shaka.github.io/blog/index.xml" rel="self" type="application/rss+xml" />
     
     
     <item>
+      <title>Persistentでテスト時だけSqliteを使う</title>
+      <link>https://m-shaka.github.io/blog/post/2019/02/persistent-test-db/</link>
+      <pubDate>Fri, 08 Feb 2019 22:24:27 +0900</pubDate>
+      
+      <guid>https://m-shaka.github.io/blog/post/2019/02/persistent-test-db/</guid>
+      <description>仕事でpersistent (postgresql) を使っているのだけど、テスト用にDB作るのもなんだかな〜 1 ということでこれを参考に、DIしてテスト時だけsqli</description>
+    </item>
+    
+    <item>
       <title>Elmでviewを分割</title>
-      <link>https://m-shaka.github.io/blog/post/elm-modulization/</link>
+      <link>https://m-shaka.github.io/blog/post/2018/04/elm-modulization/</link>
       <pubDate>Sun, 22 Apr 2018 19:02:53 +0900</pubDate>
       
-      <guid>https://m-shaka.github.io/blog/post/elm-modulization/</guid>
+      <guid>https://m-shaka.github.io/blog/post/2018/04/elm-modulization/</guid>
       <description>アーキテクチャを複数のファイルに切り分けて入れ子にするのにちょっとひと工夫必要だったのだけど、これに関して日本語での情報があまり見当たらなか</description>
     </item>
     
     <item>
       <title>ElmのParserライブラリで論理演算(3)</title>
-      <link>https://m-shaka.github.io/blog/post/elm-boolean-parser-3/</link>
+      <link>https://m-shaka.github.io/blog/post/2018/02/elm-boolean-parser-3/</link>
       <pubDate>Sun, 18 Feb 2018 11:14:03 +0900</pubDate>
       
-      <guid>https://m-shaka.github.io/blog/post/elm-boolean-parser-3/</guid>
+      <guid>https://m-shaka.github.io/blog/post/2018/02/elm-boolean-parser-3/</guid>
       <description>前回のを公開したら、親切な友人がよりよい（かつ一般的な）実装方法を教えてくれた。 そなたに感謝を。 調べたところ再帰下降構文解析というものらしい</description>
     </item>
     
     <item>
       <title>ElmのParserライブラリで論理演算(2)</title>
-      <link>https://m-shaka.github.io/blog/post/elm-boolean-parser-2/</link>
+      <link>https://m-shaka.github.io/blog/post/2018/02/elm-boolean-parser-2/</link>
       <pubDate>Sat, 17 Feb 2018 13:12:57 +0900</pubDate>
       
-      <guid>https://m-shaka.github.io/blog/post/elm-boolean-parser-2/</guid>
+      <guid>https://m-shaka.github.io/blog/post/2018/02/elm-boolean-parser-2/</guid>
       <description>2018/02/18追記 ここでの実装はあまり一般的なやり方ではないそうなので、苦労の痕跡として捉えて下さい。 こちらで一般的な実装方法を試みて</description>
     </item>
     
     <item>
       <title>ElmのParserライブラリで論理演算(1)</title>
-      <link>https://m-shaka.github.io/blog/post/elm-boolean-parser-1/</link>
+      <link>https://m-shaka.github.io/blog/post/2018/02/elm-boolean-parser-1/</link>
       <pubDate>Mon, 12 Feb 2018 15:34:54 +0900</pubDate>
       
-      <guid>https://m-shaka.github.io/blog/post/elm-boolean-parser-1/</guid>
+      <guid>https://m-shaka.github.io/blog/post/2018/02/elm-boolean-parser-1/</guid>
       <description>Elmの練習とパーサーに親しむのを兼ねて、論理演算のためのパーサーを作ってみた。 パーサーの知識が無であるため無駄な実装をしている可能性が大き</description>
     </item>
     

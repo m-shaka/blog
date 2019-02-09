@@ -4,26 +4,31 @@
   
   <url>
     <loc>https://m-shaka.github.io/blog/post/</loc>
+    <lastmod>2019-02-08T22:24:27+09:00</lastmod>
+  </url>
+  
+  <url>
+    <loc>https://m-shaka.github.io/blog/post/2019/02/persistent-test-db/</loc>
+    <lastmod>2019-02-08T22:24:27+09:00</lastmod>
+  </url>
+  
+  <url>
+    <loc>https://m-shaka.github.io/blog/post/2018/04/elm-modulization/</loc>
     <lastmod>2018-04-22T19:02:53+09:00</lastmod>
   </url>
   
   <url>
-    <loc>https://m-shaka.github.io/blog/post/elm-modulization/</loc>
-    <lastmod>2018-04-22T19:02:53+09:00</lastmod>
-  </url>
-  
-  <url>
-    <loc>https://m-shaka.github.io/blog/post/elm-boolean-parser-3/</loc>
+    <loc>https://m-shaka.github.io/blog/post/2018/02/elm-boolean-parser-3/</loc>
     <lastmod>2018-02-18T11:14:03+09:00</lastmod>
   </url>
   
   <url>
-    <loc>https://m-shaka.github.io/blog/post/elm-boolean-parser-2/</loc>
+    <loc>https://m-shaka.github.io/blog/post/2018/02/elm-boolean-parser-2/</loc>
     <lastmod>2018-02-17T13:12:57+09:00</lastmod>
   </url>
   
   <url>
-    <loc>https://m-shaka.github.io/blog/post/elm-boolean-parser-1/</loc>
+    <loc>https://m-shaka.github.io/blog/post/2018/02/elm-boolean-parser-1/</loc>
     <lastmod>2018-02-12T15:34:54+09:00</lastmod>
   </url>
   
@@ -43,6 +48,12 @@
   </url>
   
   <url>
+    <loc>https://m-shaka.github.io/blog/tags/haskell/</loc>
+    <lastmod>2019-02-08T22:24:27+09:00</lastmod>
+    <priority>0</priority>
+  </url>
+  
+  <url>
     <loc>https://m-shaka.github.io/blog/tags/</loc>
     <lastmod>2018-04-22T19:02:53+09:00</lastmod>
     <priority>0</priority>
@@ -50,7 +61,7 @@
   
   <url>
     <loc>https://m-shaka.github.io/blog/</loc>
-    <lastmod>2018-04-22T19:02:53+09:00</lastmod>
+    <lastmod>2019-02-08T22:24:27+09:00</lastmod>
     <priority>0</priority>
   </url>
   
