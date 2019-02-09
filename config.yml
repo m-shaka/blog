@@ -12,3 +12,6 @@ author:
   name: m-shaka
   github: m-shaka
   twitter: schwer_metall
+params:
+  comments: true
+disqusShortname: m-shaka-blog
