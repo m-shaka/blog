@@ -1,0 +1,398 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+  <meta charset="utf-8" />
+  <meta http-equiv="X-UA-Compatible" content="IE=edge">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0">
+
+  <title>Extensibleのレコードを環境変数で上書き</title>
+  <meta property="og:title" content="Extensibleのレコードを環境変数で上書き" />
+  <meta name="twitter:title" content="Extensibleのレコードを環境変数で上書き" />
+  <meta name="description" content="Extensibleのレコードを食わせて、レコードのキーと一致する環境変数があったら上書きして返す、ということをやってみた（まあ同僚の案なん">
+  <meta property="og:description" content="Extensibleのレコードを食わせて、レコードのキーと一致する環境変数があったら上書きして返す、ということをやってみた（まあ同僚の案なん">
+  <meta name="twitter:description" content="Extensibleのレコードを食わせて、レコードのキーと一致する環境変数があったら上書きして返す、ということをやってみた（まあ同僚の案なん">
+  <meta name="author" content="m-shaka"/>
+  <meta name="twitter:card" content="summary" />
+  <meta name="twitter:site" content="@schwer_metall" />
+  <meta name="twitter:creator" content="@schwer_metall" />
+  <meta property="og:url" content="https://m-shaka.github.io/post/2019/03/extensible-override/" />
+  <meta property="og:type" content="website" />
+  <meta property="og:site_name" content="m-shaka&#39;s blog" />
+
+  <meta name="generator" content="Hugo 0.36" />
+  <link rel="canonical" href="https://m-shaka.github.io/post/2019/03/extensible-override/" />
+  <link rel="alternate" href="https://m-shaka.github.io/blog/index.xml" type="application/rss+xml" title="m-shaka&#39;s blog">
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/KaTeX/0.7.1/katex.min.css" integrity="sha384-wITovz90syo1dJWVh32uuETPVEtGigN07tkttEqPv+uR2SE/mbQcG7ATL28aI9H0" crossorigin="anonymous">
+  <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/font-awesome/4.7.0/css/font-awesome.min.css" integrity="sha384-wvfXpqpZZVQGK6TAh5PVlGOfQNHSoD2xbE+QkPxCAFlNEevoEH3Sl0sibVcOQVnN" crossorigin="anonymous">
+  <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/css/bootstrap.min.css" integrity="sha384-BVYiiSIFeK1dGmJRAkycuHAHRg32OmUcww7on3RYdg4Va+PmSTsz/K68vbdEjh4u" crossorigin="anonymous">
+  <link rel="stylesheet" href="https://m-shaka.github.io/blog/css/main.css" /><link rel="stylesheet" href="https://fonts.googleapis.com/css?family=Lora:400,700,400italic,700italic" />
+  <link rel="stylesheet" href="https://fonts.googleapis.com/css?family=Open+Sans:300italic,400italic,600italic,700italic,800italic,400,300,600,700,800" /><link rel="stylesheet" href="https://m-shaka.github.io/blog/css/syntax.css" /><link rel="stylesheet" href="https://m-shaka.github.io/blog/css/codeblock.css" />
+
+
+
+<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/photoswipe/4.1.2/photoswipe.min.css" integrity="sha384-h/L2W9KefUClHWaty3SLE5F/qvc4djlyR4qY3NUV5HGQBBW7stbcfff1+I/vmsHh" crossorigin="anonymous">
+<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/photoswipe/4.1.2/default-skin/default-skin.min.css" integrity="sha384-iD0dNku6PYSIQLyfTOpB06F2KCZJAKLOThS5HRe8b3ibhdEQ6eKsFf/EeFxdOt5R" crossorigin="anonymous">
+
+
+
+<div class="pswp" tabindex="-1" role="dialog" aria-hidden="true">
+
+<div class="pswp__bg"></div>
+
+<div class="pswp__scroll-wrap">
+    
+    <div class="pswp__container">
+      <div class="pswp__item"></div>
+      <div class="pswp__item"></div>
+      <div class="pswp__item"></div>
+    </div>
+    
+    <div class="pswp__ui pswp__ui--hidden">
+    <div class="pswp__top-bar">
+      
+      <div class="pswp__counter"></div>
+      <button class="pswp__button pswp__button--close" title="Close (Esc)"></button>
+      <button class="pswp__button pswp__button--share" title="Share"></button>
+      <button class="pswp__button pswp__button--fs" title="Toggle fullscreen"></button>
+      <button class="pswp__button pswp__button--zoom" title="Zoom in/out"></button>
+      
+      
+      <div class="pswp__preloader">
+        <div class="pswp__preloader__icn">
+          <div class="pswp__preloader__cut">
+            <div class="pswp__preloader__donut"></div>
+          </div>
+        </div>
+      </div>
+    </div>
+    <div class="pswp__share-modal pswp__share-modal--hidden pswp__single-tap">
+      <div class="pswp__share-tooltip"></div>
+    </div>
+    <button class="pswp__button pswp__button--arrow--left" title="Previous (arrow left)">
+    </button>
+    <button class="pswp__button pswp__button--arrow--right" title="Next (arrow right)">
+    </button>
+    <div class="pswp__caption">
+      <div class="pswp__caption__center"></div>
+    </div>
+    </div>
+    </div>
+</div>
+
+</head>
+
+  <body>
+    <nav class="navbar navbar-default navbar-fixed-top navbar-custom">
+  <div class="container-fluid">
+    <div class="navbar-header">
+      <button type="button" class="navbar-toggle" data-toggle="collapse" data-target="#main-navbar">
+        <span class="sr-only">Toggle navigation</span>
+        <span class="icon-bar"></span>
+        <span class="icon-bar"></span>
+        <span class="icon-bar"></span>
+      </button>
+      <a class="navbar-brand" href="https://m-shaka.github.io/blog">m-shaka&#39;s blog</a>
+    </div>
+
+    <div class="collapse navbar-collapse" id="main-navbar">
+      <ul class="nav navbar-nav navbar-right">
+        
+          
+            <li>
+              <a title="Post" href="https://m-shaka.github.io/blog/post/">Post</a>
+            </li>
+          
+        
+          
+            <li>
+              <a title="About" href="https://m-shaka.github.io/blog/about/">About</a>
+            </li>
+          
+        
+
+        
+
+        
+      </ul>
+    </div>
+
+    <div class="avatar-container">
+      <div class="avatar-img-border">
+        
+      </div>
+    </div>
+
+  </div>
+</nav>
+
+
+
+
+    
+  
+  
+  
+
+
+
+
+  
+
+  <header class="header-section ">
+    
+    <div class="intro-header no-img">
+      
+      <div class="container">
+        <div class="row">
+          <div class="col-lg-8 col-lg-offset-2 col-md-10 col-md-offset-1">
+            <div class="post-heading">
+              <h1>Extensibleのレコードを環境変数で上書き</h1>
+                
+                
+                  <span class="post-meta">
+  
+  
+  <i class="fa fa-calendar-o"></i>&nbsp;Posted on March 3, 2019
+  
+  
+  
+</span>
+
+
+                
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </header>
+
+
+    
+<div class="container" role="main">
+  <div class="row">
+    <div class="col-lg-8 col-lg-offset-2 col-md-10 col-md-offset-1">
+      <article role="main" class="blog-post">
+        
+
+<p>Extensibleのレコードを食わせて、レコードのキーと一致する環境変数があったら上書きして返す、ということをやってみた（まあ同僚の案なんだけど）。
+型の理解にめっちゃ苦労した、というか未だにモヤっとしているんだけど、頑張ったのでアウトプットしておく。</p>
+
+<p>Extensibleの使ったことがないとわからない話になるので、それでも読みたいという善良な方は<a href="http://wiki.hask.moe/">Extensible攻略Wiki</a>を先に読もう。
+私も使い始めで全然理解できてはいないけど、めっちゃ便利でイケてるということはわかる。</p>
+
+<h2 id="準備">準備</h2>
+
+<p>レコードの型とデフォルトの値を定義する。
+あとインポートとGHC拡張もここに全部載せちゃう。</p>
+<div class="highlight"><pre style="background-color:#f0f3f3;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-haskell" data-lang="haskell"><span style="color:#09f;font-style:italic">{-# LANGUAGE DataKinds         #-}</span>
+<span style="color:#09f;font-style:italic">{-# LANGUAGE FlexibleContexts  #-}</span>
+<span style="color:#09f;font-style:italic">{-# LANGUAGE OverloadedStrings #-}</span>
+<span style="color:#09f;font-style:italic">{-# LANGUAGE TypeApplications  #-}</span>
+<span style="color:#09f;font-style:italic">{-# LANGUAGE TypeOperators     #-}</span>
+
+<span style="color:#069;font-weight:bold">module</span> <span style="color:#0cf;font-weight:bold">Main</span> <span style="color:#069;font-weight:bold">where</span>
+
+<span style="color:#069;font-weight:bold">import</span>           <span style="color:#0cf;font-weight:bold">Control.Monad.Identity</span>
+<span style="color:#069;font-weight:bold">import</span>           <span style="color:#0cf;font-weight:bold">Data.Extensible</span>
+<span style="color:#069;font-weight:bold">import</span>           <span style="color:#0cf;font-weight:bold">Data.Maybe</span>             (<span style="color:#c0f">maybe</span>)
+<span style="color:#069;font-weight:bold">import</span>           <span style="color:#0cf;font-weight:bold">Numeric.Natural</span>        (<span style="color:#078;font-weight:bold">Natural</span>)
+<span style="color:#069;font-weight:bold">import</span>           <span style="color:#0cf;font-weight:bold">System.Environment</span>     (<span style="color:#c0f">getEnvironment</span>, <span style="color:#c0f">setEnv</span>)
+<span style="color:#069;font-weight:bold">import</span>           <span style="color:#0cf;font-weight:bold">Text.Read</span>              (<span style="color:#c0f">readMaybe</span>)
+
+<span style="color:#069;font-weight:bold">type</span> <span style="color:#078;font-weight:bold">MyRecord</span> <span style="color:#000;font-weight:bold">=</span> <span style="color:#078;font-weight:bold">Record</span>
+  <span style="color:#078;font-weight:bold">&#39;[ &#34;HOGE_STR&#34; :&gt; String
+</span><span style="color:#078;font-weight:bold">   , &#34;HOGE_NAT&#34; :&gt; Natural
+</span><span style="color:#078;font-weight:bold">   , &#34;HOGE_BOOL&#34; :&gt; Bool]</span>
+
+<span style="color:#09f;font-style:italic">-- System.Envrionment.getEnvironmentの戻り値の型のエイリアス</span>
+<span style="color:#069;font-weight:bold">type</span> <span style="color:#078;font-weight:bold">EnvKeyValue</span> <span style="color:#000;font-weight:bold">=</span> [(<span style="color:#078;font-weight:bold">String</span>, <span style="color:#078;font-weight:bold">String</span>)]
+
+<span style="color:#c0f">defRecord</span> <span style="color:#000;font-weight:bold">::</span> <span style="color:#078;font-weight:bold">MyRecord</span>
+<span style="color:#c0f">defRecord</span> <span style="color:#000;font-weight:bold">=</span>
+  <span style="color:#c0f">itemAssoc</span> (<span style="color:#078;font-weight:bold">Proxy</span> <span style="color:#555">@</span> <span style="color:#c30">&#34;HOGE_STR&#34;</span>) <span style="color:#555">@=</span> <span style="color:#c30">&#34;def&#34;</span>
+  <span style="color:#555">&lt;:</span> <span style="color:#c0f">itemAssoc</span> (<span style="color:#078;font-weight:bold">Proxy</span> <span style="color:#555">@</span> <span style="color:#c30">&#34;HOGE_NAT&#34;</span>) <span style="color:#555">@=</span> <span style="color:#f60">0</span>
+  <span style="color:#555">&lt;:</span> <span style="color:#c0f">itemAssoc</span> (<span style="color:#078;font-weight:bold">Proxy</span> <span style="color:#555">@</span> <span style="color:#c30">&#34;HOGE_BOOL&#34;</span>) <span style="color:#555">@=</span> <span style="color:#078;font-weight:bold">False</span>
+  <span style="color:#555">&lt;:</span> <span style="color:#c0f">nil</span></code></pre></div>
+<p>環境変数のキーには慣習として大文字を用いるが、OverloadedLabels拡張では大文字始まりが許されていないので、あの便利な<code>#hoge @= &quot;fuga&quot;</code>という構文が使えない。
+代わりに<code>itemAssoc (Proxy @ &quot;hoge&quot;) @= &quot;fuga&quot;</code>を使う。記述量が増えるのはちょっと嫌だが仕方ない。</p>
+
+<h2 id="上書きする">上書きする</h2>
+
+<p>そして本題の上書き部分。</p>
+<div class="highlight"><pre style="background-color:#f0f3f3;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-haskell" data-lang="haskell"><span style="color:#c0f">merge</span>  <span style="color:#000;font-weight:bold">::</span> <span style="color:#078;font-weight:bold">Forall</span> (<span style="color:#078;font-weight:bold">KeyValue</span> <span style="color:#078;font-weight:bold">KnownSymbol</span> <span style="color:#078;font-weight:bold">Read</span>) <span style="color:#c0f">xs</span> <span style="color:#000;font-weight:bold">=&gt;</span> <span style="color:#078;font-weight:bold">Record</span> <span style="color:#c0f">xs</span> <span style="color:#000;font-weight:bold">-&gt;</span> <span style="color:#078;font-weight:bold">IO</span> (<span style="color:#078;font-weight:bold">Record</span> <span style="color:#c0f">xs</span>)
+<span style="color:#c0f">merge</span> <span style="color:#c0f">r</span> <span style="color:#000;font-weight:bold">=</span> <span style="color:#069;font-weight:bold">do</span>
+  <span style="color:#c0f">e</span> <span style="color:#000;font-weight:bold">&lt;-</span> <span style="color:#c0f">getEnvironment</span>
+  <span style="color:#c0f">pure</span> <span style="color:#555">$</span> <span style="color:#c0f">hmapWithIndexFor</span> <span style="color:#c0f">p</span> (<span style="color:#c0f">f</span> <span style="color:#c0f">e</span>) <span style="color:#c0f">r</span>
+  <span style="color:#069;font-weight:bold">where</span>
+    <span style="color:#c0f">p</span> <span style="color:#000;font-weight:bold">=</span> <span style="color:#078;font-weight:bold">Proxy</span> <span style="color:#555">@</span> (<span style="color:#078;font-weight:bold">KeyValue</span> <span style="color:#078;font-weight:bold">KnownSymbol</span> <span style="color:#078;font-weight:bold">Read</span>)
+    <span style="color:#c0f">f</span> <span style="color:#000;font-weight:bold">::</span> <span style="color:#078;font-weight:bold">KeyValue</span> <span style="color:#078;font-weight:bold">KnownSymbol</span> <span style="color:#078;font-weight:bold">Read</span> <span style="color:#c0f">x</span> <span style="color:#000;font-weight:bold">=&gt;</span> <span style="color:#078;font-weight:bold">EnvKeyValue</span> <span style="color:#000;font-weight:bold">-&gt;</span> <span style="color:#078;font-weight:bold">Membership</span> <span style="color:#c0f">xs</span> <span style="color:#c0f">x</span> <span style="color:#000;font-weight:bold">-&gt;</span> <span style="color:#078;font-weight:bold">Field</span> <span style="color:#078;font-weight:bold">Identity</span> <span style="color:#c0f">x</span> <span style="color:#000;font-weight:bold">-&gt;</span> <span style="color:#078;font-weight:bold">Field</span> <span style="color:#078;font-weight:bold">Identity</span> <span style="color:#c0f">x</span>
+    <span style="color:#c0f">f</span> <span style="color:#c0f">e</span> <span style="color:#c0f">m</span> (<span style="color:#078;font-weight:bold">Field</span> <span style="color:#c0f">idVal</span>) <span style="color:#000;font-weight:bold">=</span> <span style="color:#078;font-weight:bold">Field</span> <span style="color:#555">$</span> <span style="color:#c0f">maybe</span> <span style="color:#c0f">idVal</span> <span style="color:#c0f">pure</span> (<span style="color:#c0f">readEnv</span> (<span style="color:#c0f">stringAssocKey</span> <span style="color:#c0f">m</span>) <span style="color:#c0f">e</span>)
+
+<span style="color:#c0f">readEnv</span> <span style="color:#000;font-weight:bold">::</span> <span style="color:#078;font-weight:bold">Read</span> <span style="color:#c0f">a</span> <span style="color:#000;font-weight:bold">=&gt;</span> <span style="color:#078;font-weight:bold">String</span> <span style="color:#000;font-weight:bold">-&gt;</span> <span style="color:#078;font-weight:bold">EnvKeyValue</span> <span style="color:#000;font-weight:bold">-&gt;</span> <span style="color:#078;font-weight:bold">Maybe</span> <span style="color:#c0f">a</span>
+<span style="color:#c0f">readEnv</span> <span style="color:#c0f">k</span> <span style="color:#c0f">kvs</span> <span style="color:#000;font-weight:bold">=</span> <span style="color:#c0f">readMaybe</span> <span style="color:#555">=&lt;&lt;</span> <span style="color:#c0f">lookup</span> <span style="color:#c0f">k</span> <span style="color:#c0f">kvs</span></code></pre></div>
+<p><code>Forall</code>の制約は、文字通り型レベルリスト<code>xs</code>の任意の要素に関するもののよう。
+ここではキーが<code>KnownSymbol</code>、つまり何らかの型レベル文字列、値が<code>Read</code>のインスタンスに限定されている。</p>
+
+<p><code>hmapWithIndexFor</code>も名前から推測できるように、レコードに対するmap処理のための関数。
+ここが結構難しかったので、まず型を書いておいてから引数について頑張って理解していく。</p>
+<div class="highlight"><pre style="background-color:#f0f3f3;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-haskell" data-lang="haskell"><span style="color:#c0f">hmapWithIndexFor</span> <span style="color:#000;font-weight:bold">::</span> <span style="color:#078;font-weight:bold">Forall</span> <span style="color:#c0f">c</span> <span style="color:#c0f">xs</span> <span style="color:#000;font-weight:bold">=&gt;</span> <span style="color:#c0f">proxy</span> <span style="color:#c0f">c</span> <span style="color:#000;font-weight:bold">-&gt;</span> (<span style="color:#c0f">forall</span> <span style="color:#c0f">x</span><span style="color:#555">.</span> <span style="color:#c0f">c</span> <span style="color:#c0f">x</span> <span style="color:#000;font-weight:bold">=&gt;</span> <span style="color:#078;font-weight:bold">Membership</span> <span style="color:#c0f">xs</span> <span style="color:#c0f">x</span> <span style="color:#000;font-weight:bold">-&gt;</span> <span style="color:#c0f">g</span> <span style="color:#c0f">x</span> <span style="color:#000;font-weight:bold">-&gt;</span> <span style="color:#c0f">h</span> <span style="color:#c0f">x</span>) <span style="color:#000;font-weight:bold">-&gt;</span> (<span style="color:#c0f">g</span> <span style="color:#078;font-weight:bold">:*</span> <span style="color:#c0f">xs</span>) <span style="color:#000;font-weight:bold">-&gt;</span> <span style="color:#c0f">h</span> <span style="color:#078;font-weight:bold">:*</span> <span style="color:#c0f">xs</span></code></pre></div>
+<h3 id="第一引数">第一引数</h3>
+
+<p><code>xs</code>には<code>merge</code>の型宣言で制約を与えたので、第一引数にも同じ制約を<code>Proxy</code>のかたちで与えてあげる。</p>
+
+<h3 id="第二引数">第二引数</h3>
+
+<p>第二引数は処理の中身になる。
+まず任意のxについてxはcを満たすので、xのキーは文字列で値はReadのインスタンスの型だ。
+<code>Membership</code>に関しては正直のところ<a href="http://wiki.hask.moe/Membership">攻略Wiki</a>を読んでもあまりわかった気がしないんだけど、とりあえず<code>stringAssocKey</code>を適用することでキーを文字列として取得できる。</p>
+
+<p>そんでgとhって何者かってことなんだけど、戻り値の型にある<code>:*</code>のドキュメントを読んだ理解だと、この文脈では<code>g :* xs</code>と書いたときは<code>RecordOf g xs</code>で、<code>g x</code>だと<code>Field g x</code>という型になるっぽい。</p>
+
+<p><code>MyRecord</code>の定義に使ってる<code>Record</code>は<code>RecordOf Indentity</code>のエイリアスなので、<code>g x</code>と<code>h x</code>は両方とも<code>Field Identity x</code>となる（<code>h x</code>が<code>Field Maybe x</code>とかになってもよいはず。種が<code>* -&gt; *</code>ならおｋ）。</p>
+
+<p>第二引数に与えてる関数<code>f</code>の具体的な中身をまとめると、</p>
+
+<ol>
+<li>フィールドのキーを文字列で取得</li>
+<li>文字列に対応する環境変数を探し、無かったらもともとの値を、あったらそれを<code>Field . Identity</code>で包んで返す</li>
+</ol>
+
+<p>という流れになっている。</p>
+
+<h2 id="試す">試す</h2>
+
+<p>実際に動かしてみる。</p>
+<div class="highlight"><pre style="background-color:#f0f3f3;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-haskell" data-lang="haskell"><span style="color:#c0f">main</span> <span style="color:#000;font-weight:bold">::</span> <span style="color:#078;font-weight:bold">IO</span> <span style="color:#366">()</span>
+<span style="color:#c0f">main</span> <span style="color:#000;font-weight:bold">=</span> <span style="color:#069;font-weight:bold">do</span>
+  <span style="color:#c0f">print</span> <span style="color:#c0f">defRecord</span>
+  <span style="color:#c0f">setEnv</span> <span style="color:#c30">&#34;HOGE_STR&#34;</span> <span style="color:#c30">&#34;</span><span style="color:#c30;font-weight:bold">\&#34;</span><span style="color:#c30">merged</span><span style="color:#c30;font-weight:bold">\&#34;</span><span style="color:#c30">&#34;</span>
+  <span style="color:#c0f">setEnv</span> <span style="color:#c30">&#34;HOGE_NAT&#34;</span> <span style="color:#c30">&#34;100&#34;</span>
+  <span style="color:#c0f">setEnv</span> <span style="color:#c30">&#34;HOGE_BOOL&#34;</span> <span style="color:#c30">&#34;True&#34;</span>
+  <span style="color:#c0f">merge</span> <span style="color:#c0f">defRecord</span> <span style="color:#555">&gt;&gt;=</span> <span style="color:#c0f">print</span></code></pre></div>
+<p>ちゃんと上書きされてる！</p>
+<div class="highlight"><pre style="background-color:#f0f3f3;-moz-tab-size:4;-o-tab-size:4;tab-size:4">HOGE_STR @= &#34;def&#34; &lt;: HOGE_NAT @= 0 &lt;: HOGE_BOOL @= False &lt;: nil
+HOGE_STR @= &#34;merged&#34; &lt;: HOGE_NAT @= 100 &lt;: HOGE_BOOL @= True &lt;: nil</pre></div>
+<p>ちなみに、このままだと<code>readMaybe</code>でそのまま文字列として持っておけばいいものまでreadしているため、環境変数の指定時にダブルクォートが必要になっちゃうので、型クラス作って<code>readEnv</code>を多相化して対応した。
+NaturalとかBoolまでインスタンス宣言する必要が生じるのでもっとうまいやり方あれば教えて欲しい。</p>
+
+      </article>
+
+      
+        <ul class="pager blog-pager">
+          
+            <li class="previous">
+              <a href="https://m-shaka.github.io/blog/post/2019/02/elm-file/" data-toggle="tooltip" data-placement="top" title="elm/fileでファイルアップロード">&larr; Previous Post</a>
+            </li>
+          
+          
+        </ul>
+      
+
+
+      
+        
+          <div class="disqus-comments">
+            <div id="disqus_thread"></div>
+<script>
+    var disqus_config = function () {
+    
+    
+    
+    };
+    (function() {
+        if (["localhost", "127.0.0.1"].indexOf(window.location.hostname) != -1) {
+            document.getElementById('disqus_thread').innerHTML = 'Disqus comments not available by default when the website is previewed locally.';
+            return;
+        }
+        var d = document, s = d.createElement('script'); s.async = true;
+        s.src = '//' + "m-shaka-blog" + '.disqus.com/embed.js';
+        s.setAttribute('data-timestamp', +new Date());
+        (d.head || d.body).appendChild(s);
+    })();
+</script>
+<noscript>Please enable JavaScript to view the <a href="https://disqus.com/?ref_noscript">comments powered by Disqus.</a></noscript>
+<a href="https://disqus.com" class="dsq-brlink">comments powered by <span class="logo-disqus">Disqus</span></a>
+          </div>
+        
+        
+      
+
+    </div>
+  </div>
+</div>
+
+    <footer>
+  <div class="container">
+    <div class="row">
+      <div class="col-lg-8 col-lg-offset-2 col-md-10 col-md-offset-1">
+        <ul class="list-inline text-center footer-links">
+          
+              <li>
+                <a href="https://github.com/m-shaka" title="GitHub">
+                  <span class="fa-stack fa-lg">
+                    <i class="fa fa-circle fa-stack-2x"></i>
+                    <i class="fa fa-github fa-stack-1x fa-inverse"></i>
+                  </span>
+                </a>
+              </li>
+              <li>
+                <a href="https://twitter.com/schwer_metall" title="Twitter">
+                  <span class="fa-stack fa-lg">
+                    <i class="fa fa-circle fa-stack-2x"></i>
+                    <i class="fa fa-twitter fa-stack-1x fa-inverse"></i>
+                  </span>
+                </a>
+              </li>
+          
+        </ul>
+        <p class="credits copyright text-muted">
+          
+            
+              m-shaka
+            
+          
+
+          &nbsp;&bull;&nbsp;
+          2019
+
+          
+            &nbsp;&bull;&nbsp;
+            <a href="https://m-shaka.github.io/blog">m-shaka&#39;s blog</a>
+          
+        </p>
+        
+        <p class="credits theme-by text-muted">
+          <a href="http://gohugo.io">Hugo v0.36</a> powered &nbsp;&bull;&nbsp; Theme by <a href="http://deanattali.com/beautiful-jekyll/">Beautiful Jekyll</a> adapted to <a href="https://github.com/halogenica/beautifulhugo">Beautiful Hugo</a>
+          
+        </p>
+      </div>
+    </div>
+  </div>
+</footer>
+
+<script src="https://cdnjs.cloudflare.com/ajax/libs/KaTeX/0.7.1/katex.min.js" integrity="sha384-/y1Nn9+QQAipbNQWU65krzJralCnuOasHncUFXGkdwntGeSvQicrYkiUBwsgUqc1" crossorigin="anonymous"></script>
+<script src="https://cdnjs.cloudflare.com/ajax/libs/KaTeX/0.7.1/contrib/auto-render.min.js" integrity="sha384-dq1/gEHSxPZQ7DdrM82ID4YVol9BYyU7GbWlIwnwyPzotpoc57wDw/guX8EaYGPx" crossorigin="anonymous"></script>
+<script src="https://code.jquery.com/jquery-1.12.4.min.js" integrity="sha256-ZosEbRLbNQzLpnKIkEdrPv7lOy9C27hHQ+Xp8a4MxAQ=" crossorigin="anonymous"></script>
+<script src="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/js/bootstrap.min.js" integrity="sha384-Tc5IQib027qvyjSMfHjOMaLkfuWVxZxUPnCJA7l2mCWNIpG9mGCD8wGNIcPD7Txa" crossorigin="anonymous"></script>
+<script src="https://m-shaka.github.io/blog/js/main.js"></script><script> renderMathInElement(document.body); </script>
+<script src="https://cdnjs.cloudflare.com/ajax/libs/photoswipe/4.1.2/photoswipe.min.js" integrity="sha384-QELNnmcmU8IR9ZAykt67vGr9/rZJdHbiWi64V88fCPaOohUlHCqUD/unNN0BXSqy" crossorigin="anonymous"></script>
+<script src="https://cdnjs.cloudflare.com/ajax/libs/photoswipe/4.1.2/photoswipe-ui-default.min.js" integrity="sha384-m67o7SkQ1ALzKZIFh4CiTA8tmadaujiTa9Vu+nqPSwDOqHrDmxLezTdFln8077+q" crossorigin="anonymous"></script>
+<script src="https://m-shaka.github.io/blog/js/load-photoswipe.js"></script>
+
+
+
+<script type="text/x-mathjax-config">
+  MathJax.Hub.Config({
+      tex2jax: { inlineMath: [['$','$'], ["\\(","\\)"]] }
+  });
+</script>
+<script
+    type="text/javascript"
+    src="https://cdn.mathjax.org/mathjax/latest/MathJax.js?config=TeX-AMS-MML_HTMLorMML" />
+</script>
+
+
+  </body>
+</html>
+
