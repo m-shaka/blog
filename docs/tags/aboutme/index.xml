@@ -1,0 +1,24 @@
+<?xml version="1.0" encoding="utf-8" standalone="yes" ?>
+<rss version="2.0" xmlns:atom="http://www.w3.org/2005/Atom">
+  <channel>
+    <title>Aboutme on m-shaka&#39;s blog</title>
+    <link>https://m-shaka.github.io/blog/tags/aboutme/</link>
+    <description>Recent content in Aboutme on m-shaka&#39;s blog</description>
+    <generator>Hugo -- gohugo.io</generator>
+    <language>ja</language>
+    <lastBuildDate>Wed, 26 Jun 2019 14:34:22 +0900</lastBuildDate>
+    
+	<atom:link href="https://m-shaka.github.io/blog/tags/aboutme/index.xml" rel="self" type="application/rss+xml" />
+    
+    
+    <item>
+      <title>勤め先ゆるぼ</title>
+      <link>https://m-shaka.github.io/blog/post/2019/06/skills/</link>
+      <pubDate>Wed, 26 Jun 2019 14:34:22 +0900</pubDate>
+      
+      <guid>https://m-shaka.github.io/blog/post/2019/06/skills/</guid>
+      <description>いいところあればぼちぼち転職もアリかな〜という気持ちになってきたので、スキルセットと職場への希望を書き出してみた。 連絡先は本稿末尾に記載して</description>
+    </item>
+    
+  </channel>
+</rss>
