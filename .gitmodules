@@ -1,3 +1,4 @@
 [submodule "themes/beautiful"]
 	path = themes/beautiful
-	url = https://github.com/halogenica/beautifulhugo.git
+	url = git@github.com:halogenica/beautifulhugo.git
+	branch = master

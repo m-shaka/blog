@@ -45,7 +45,7 @@ view model =
 ```
 
 ボタンをクリックすると`File.Select.file`が呼ばれてファイル選択ウィンドウが開き、GUIから選択すると引数として渡してある`CsvSelected : File -> Msg`メッセージが発火する。
-ここでbodyに`Http.fileBody : File -> Http.Body`を受け取ったFile型の値に適用したものを渡してポストする。Content-Typeは自動で入れてくれるっぽい。
+ここで受け取ったFile型の値に、`Http.fileBody : File -> Http.Body`を適用してbodyに渡してポストする。Content-Typeは自動で入れてくれるっぽい。
 
 ## multipart/form-data
 フォームとして送信する。これには`Http.multipartBody : List Http.Part -> Http.Body`を使う。コード例はHttp.postの部分だけ上のものと異なる。
