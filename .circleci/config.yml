@@ -6,8 +6,8 @@ jobs:
     working_directory: ~/project
     steps:
       - add_ssh_keys:
-        fingerprints:
-          - "53:fd:8f:cb:c3:b4:29:23:fc:a1:d9:44:2d:a6:9e:96"
+          fingerprints:
+            - "53:fd:8f:cb:c3:b4:29:23:fc:a1:d9:44:2d:a6:9e:96"
       - checkout
       - run:
           name: "checkout submodule"
