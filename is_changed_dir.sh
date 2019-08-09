@@ -6,7 +6,7 @@ else
   DIFF_TARGET="origin/master"
 fi
 
-DIFF_FILES=(`git diff ${DIFF_TARGET} --name-only --relative=${1}`)
+DIFF_FILES=(`git diff --name-only --relative=${1} ${DIFF_TARGET}`)
 
 if [ ${#DIFF_FILES[@]} -eq 0 ]; then
   exit 1
