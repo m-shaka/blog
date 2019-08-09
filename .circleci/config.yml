@@ -19,4 +19,7 @@ jobs:
           command: HUGO_ENV=production hugo -v
       - run:
           name: "deploy"
-          command: git commit -a -m 'deploy from CircleCI'
+          command: |
+            git config --global user.email "buddha0818@gmail.com"
+            git config --global user.name "m-shaka+circleci"
+            git commit -a -m 'deploy from CircleCI'
