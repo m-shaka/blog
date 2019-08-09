@@ -10,17 +10,24 @@ jobs:
             - "53:fd:8f:cb:c3:b4:29:23:fc:a1:d9:44:2d:a6:9e:96"
       - checkout
       - run:
+          name: "check if docs is changed"
+          command: |
+            if ./is_changed_dir.sh "docs"; then
+              circleci step halt
+            fi
+      - run:
           name: "checkout submodule"
           command: |
             git submodule sync
             git submodule update --init
       - run:
-          name: "Run Hugo"
+          name: "run Hugo"
           command: HUGO_ENV=production hugo -v
       - run:
           name: "deploy"
           command: |
             git config --global user.email "buddha0818@gmail.com"
             git config --global user.name "m-shaka+circleci"
-            git commit -a -m 'deploy from CircleCI'
+            git add docs
+            git commit -m 'deploy from CircleCI'
             git push origin HEAD
