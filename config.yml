@@ -1,6 +1,5 @@
 baseURL: https://m-shaka.github.io/blog
 languageCode: ja
-defaultContentLanguage: ja
 canonifyURLs: true
 publishDir: docs
 hasCJKLanguage: true

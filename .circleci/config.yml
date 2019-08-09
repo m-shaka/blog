@@ -7,5 +7,10 @@ jobs:
     steps:
       - checkout
       - run:
+          name: "checkout submodule"
+          command: |
+            git submodule sync
+            git submodule update --init
+      - run:
           name: "Run Hugo"
           command: HUGO_ENV=production hugo -v
