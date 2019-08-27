@@ -6,19 +6,10 @@
     <description>Recent content in Post on m-shaka&#39;s blog</description>
     <generator>Hugo -- gohugo.io</generator>
     <language>ja</language>
-    <lastBuildDate>Wed, 26 Jun 2019 14:34:22 +0900</lastBuildDate>
+    <lastBuildDate>Sun, 03 Mar 2019 13:56:22 +0900</lastBuildDate>
     
 	<atom:link href="https://m-shaka.github.io/blog/post/index.xml" rel="self" type="application/rss+xml" />
     
-    
-    <item>
-      <title>勤め先ゆるぼ</title>
-      <link>https://m-shaka.github.io/blog/post/2019/06/skills/</link>
-      <pubDate>Wed, 26 Jun 2019 14:34:22 +0900</pubDate>
-      
-      <guid>https://m-shaka.github.io/blog/post/2019/06/skills/</guid>
-      <description>いいところあればぼちぼち転職もアリかな〜という気持ちになってきたので、スキルセットと職場への希望を書き出してみた。 連絡先は本稿末尾に記載して</description>
-    </item>
     
     <item>
       <title>Extensibleのレコードを環境変数で上書き</title>
