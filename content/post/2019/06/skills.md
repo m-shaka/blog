@@ -1,6 +1,7 @@
 ---
 title: "勤め先ゆるぼ"
 date: 2019-06-26T14:34:22+09:00
+draft: true
 tags:
   - aboutMe
 ---
