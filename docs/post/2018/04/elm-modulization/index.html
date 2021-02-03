@@ -1,0 +1,165 @@
+<!doctype html><html lang=en itemscope itemtype=http://schema.org/WebPage><head><meta charset=utf-8><meta http-equiv=x-ua-compatible content="IE=edge"><meta name=viewport content="width=device-width,initial-scale=1,maximum-scale=1"><title>Elmでviewを分割 - m-shaka&#39;s blog</title><meta property=og:title content=Elmでviewを分割><meta name=twitter:title content=Elmでviewを分割><meta name=description content=アーキテクチャを複数のファイルに切り分けて入れ子にするのにちょっとひと工夫必要だったのだけど、これに関して日本語での情報があまり見当たらなか><meta property=og:description content=アーキテクチャを複数のファイルに切り分けて入れ子にするのにちょっとひと工夫必要だったのだけど、これに関して日本語での情報があまり見当たらなか><meta name=twitter:description content=アーキテクチャを複数のファイルに切り分けて入れ子にするのにちょっとひと工夫必要だったのだけど、これに関して日本語での情報があまり見当たらなか><meta name=author content=m-shaka><script type=application/ld+json>{"@context":"http://schema.org","@type":"WebSite","name":"m-shaka&#39;s blog","url":"https://m-shaka.github.io/blog"}</script><script type=application/ld+json>{"@context":"http://schema.org","@type":"Organization","name":"","url":"https://m-shaka.github.io/blog"}</script><script type=application/ld+json>{"@context":"http://schema.org","@type":"BreadcrumbList","itemListElement":[{"@type":"ListItem","position":1,"item":{"@id":"https://m-shaka.github.io/blog","name":"home"}},{"@type":"ListItem","position":3,"item":{"@id":"https://m-shaka.github.io/blog/post/2018/04/elm-modulization/","name":"Elmでviewを分割"}}]}</script><script type=application/ld+json>{"@context":"http://schema.org","@type":"Article","author":{"name":"m-shaka"},"headline":"Elmでviewを分割","description":"アーキテクチャを複数のファイルに切り分けて入れ子にするのにちょっとひと工夫必要だったのだけど、これに関して日本語での情報があまり見当たらなか","inLanguage":"en","wordCount":1255,"datePublished":"2018-04-22T19:02:53","dateModified":"2018-04-22T19:02:53","image":"https://m-shaka.github.io/blog/img/avatar-icon.png","keywords":["Elm"],"mainEntityOfPage":"https://m-shaka.github.io/blog/post/2018/04/elm-modulization/","publisher":{"@type":"Organization","name":"https://m-shaka.github.io/blog","logo":{"@type":"ImageObject","url":"https://m-shaka.github.io/blog/img/avatar-icon.png","height":60,"width":60}}}</script><meta property=og:title content=Elmでviewを分割><meta property=og:description content=アーキテクチャを複数のファイルに切り分けて入れ子にするのにちょっとひと工夫必要だったのだけど、これに関して日本語での情報があまり見当たらなか><meta property=og:image content=https://m-shaka.github.io/blog/img/avatar-icon.png><meta property=og:url content=https://m-shaka.github.io/post/2018/04/elm-modulization/><meta property=og:type content=website><meta property=og:site_name content="m-shaka's blog"><meta name=twitter:title content=Elmでviewを分割><meta name=twitter:description content=アーキテクチャを複数のファイルに切り分けて入れ子にするのにちょっとひと工夫必要だったのだけど、これに関して日本語での情報があまり見当たらなか><meta name=twitter:image content=https://m-shaka.github.io/blog/img/avatar-icon.png><meta name=twitter:card content=summary><meta name=twitter:site content=@schwer_metall><meta name=twitter:creator content=@schwer_metall><meta property=og:image content=https://m-shaka.github.io/blog/img/avatar-icon.png><meta name=twitter:image content=https://m-shaka.github.io/blog/img/avatar-icon.png><meta name=twitter:card content=summary><meta name=twitter:site content=@schwer_metall><meta name=twitter:creator content=@schwer_metall><meta property=og:url content=https://m-shaka.github.io/post/2018/04/elm-modulization/><meta property=og:type content=website><meta property=og:site_name content="m-shaka's blog"><meta name=generator content="Hugo 0.50"><link rel=alternate href=https://m-shaka.github.io/blog/index.xml type=application/rss+xml title="m-shaka's blog"><link rel=stylesheet href=https://cdnjs.cloudflare.com/ajax/libs/KaTeX/0.10.0/katex.min.css integrity=sha384-9eLZqc9ds8eNjO3TmqPeYcDj8n+Qfa4nuSiGYa6DjLNcv9BtN69ZIulL9+8CqC9Y crossorigin=anonymous><link rel=stylesheet href=https://use.fontawesome.com/releases/v5.5.0/css/all.css integrity=sha384-B4dIYHKNBt8Bc12p+WXckhzcICo0wtJAoU8YZTY5qE0Id1GSseTk6S+L3BlXeVIU crossorigin=anonymous><link rel=stylesheet href=https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/css/bootstrap.min.css integrity=sha384-BVYiiSIFeK1dGmJRAkycuHAHRg32OmUcww7on3RYdg4Va+PmSTsz/K68vbdEjh4u crossorigin=anonymous><link rel=stylesheet href=https://m-shaka.github.io/blog/css/main.css><link rel=stylesheet href="https://fonts.googleapis.com/css?family=Lora:400,700,400italic,700italic"><link rel=stylesheet href="https://fonts.googleapis.com/css?family=Open+Sans:300italic,400italic,600italic,700italic,800italic,400,300,600,700,800"><link rel=stylesheet href=https://m-shaka.github.io/blog/css/syntax.css><link rel=stylesheet href=https://m-shaka.github.io/blog/css/codeblock.css><link rel=stylesheet href=https://cdnjs.cloudflare.com/ajax/libs/photoswipe/4.1.2/photoswipe.min.css integrity=sha384-h/L2W9KefUClHWaty3SLE5F/qvc4djlyR4qY3NUV5HGQBBW7stbcfff1+I/vmsHh crossorigin=anonymous><link rel=stylesheet href=https://cdnjs.cloudflare.com/ajax/libs/photoswipe/4.1.2/default-skin/default-skin.min.css integrity=sha384-iD0dNku6PYSIQLyfTOpB06F2KCZJAKLOThS5HRe8b3ibhdEQ6eKsFf/EeFxdOt5R crossorigin=anonymous></head><body><nav class="navbar navbar-default navbar-fixed-top navbar-custom"><div class=container-fluid><div class=navbar-header><button type=button class=navbar-toggle data-toggle=collapse data-target=#main-navbar>
+<span class=sr-only>Toggle navigation</span>
+<span class=icon-bar></span><span class=icon-bar></span><span class=icon-bar></span></button>
+<a class=navbar-brand href=https://m-shaka.github.io/blog>m-shaka&#39;s blog</a></div><div class="collapse navbar-collapse" id=main-navbar><ul class="nav navbar-nav navbar-right"><li><a title=Post href=https://m-shaka.github.io/blog/post/>Post</a></li><li><a title=About href=https://m-shaka.github.io/blog/about/>About</a></li></ul></div><div class=avatar-container><div class=avatar-img-border><a title="m-shaka's blog" href=https://m-shaka.github.io/blog><img class=avatar-img src=https://m-shaka.github.io/blog/img/avatar-icon.png alt="m-shaka's blog"></a></div></div></div></nav><div class=pswp tabindex=-1 role=dialog aria-hidden=true><div class=pswp__bg></div><div class=pswp__scroll-wrap><div class=pswp__container><div class=pswp__item></div><div class=pswp__item></div><div class=pswp__item></div></div><div class="pswp__ui pswp__ui--hidden"><div class=pswp__top-bar><div class=pswp__counter></div><button class="pswp__button pswp__button--close" title="Close (Esc)"></button>
+<button class="pswp__button pswp__button--share" title=Share></button>
+<button class="pswp__button pswp__button--fs" title="Toggle fullscreen"></button>
+<button class="pswp__button pswp__button--zoom" title="Zoom in/out"></button><div class=pswp__preloader><div class=pswp__preloader__icn><div class=pswp__preloader__cut><div class=pswp__preloader__donut></div></div></div></div></div><div class="pswp__share-modal pswp__share-modal--hidden pswp__single-tap"><div class=pswp__share-tooltip></div></div><button class="pswp__button pswp__button--arrow--left" title="Previous (arrow left)"></button>
+<button class="pswp__button pswp__button--arrow--right" title="Next (arrow right)"></button><div class=pswp__caption><div class=pswp__caption__center></div></div></div></div></div><header class=header-section><div class="intro-header no-img"><div class=container><div class=row><div class="col-lg-8 col-lg-offset-2 col-md-10 col-md-offset-1"><div class=post-heading><h1>Elmでviewを分割</h1><span class=post-meta><i class="fas fa-calendar"></i>&nbsp;Posted on April 22, 2018
+&nbsp;|&nbsp;<i class="fas fa-user"></i>&nbsp;m-shaka</span></div></div></div></div></div></header><div class=container role=main><div class=row><div class="col-lg-8 col-lg-offset-2 col-md-10 col-md-offset-1"><article role=main class=blog-post><p>アーキテクチャを複数のファイルに切り分けて入れ子にするのにちょっとひと工夫必要だったのだけど、これに関して日本語での情報があまり見当たらなかったので残しておく。
+先に結論を言っておくと<code>Html.map</code>と<code>Cmd.map</code>が肝。
+なおElmのバージョンは0.18。</p><p>文字列の表示をオンオフするだけのアプリで考えてみよう。
+プログラムの全体はこう。</p><div class=highlight><pre style=background-color:#f0f3f3;-moz-tab-size:4;-o-tab-size:4;tab-size:4><code class=language-Main.elm data-lang=Main.elm><span style=color:#069;font-weight:700>module </span><span style=color:#0a8;font-weight:700>Main</span> <span style=color:#033>exposing</span> <span style=color:#c0f>(..)</span>
+
+<span style=color:#069;font-weight:700>import </span><span style=color:#0a8;font-weight:700>Html</span> <span style=color:#033>exposing</span> <span style=color:#c0f>(..)</span>
+<span style=color:#069;font-weight:700>import </span><span style=color:#0a8;font-weight:700>Html.Attributes</span> <span style=color:#033>exposing</span> (<span style=color:#033>style</span>)
+<span style=color:#069;font-weight:700>import </span><span style=color:#0a8;font-weight:700>Html.Events</span> <span style=color:#033>exposing</span> (<span style=color:#033>onClick</span>)
+
+
+<span style=color:#069;font-weight:700>main </span><span style=color:#c0f>:</span> <span style=color:#078;font-weight:700>Program</span> <span style=color:#078;font-weight:700>Never</span> <span style=color:#078;font-weight:700>Bool</span> <span style=color:#078;font-weight:700>Msg</span>
+<span style=color:#069;font-weight:700>main </span><span style=color:#c0f>=</span>
+    <span style=color:#033>program</span>
+        { <span style=color:#033>init</span> <span style=color:#c0f>=</span> <span style=color:#033>init</span>
+        , <span style=color:#033>view</span> <span style=color:#c0f>=</span> <span style=color:#033>view</span>
+        , <span style=color:#033>update</span> <span style=color:#c0f>=</span> <span style=color:#033>update</span>
+        , <span style=color:#033>subscriptions</span> <span style=color:#c0f>=</span> <span style=color:#c0f>\</span><span style=color:#033>_</span> <span style=color:#c0f>-&gt;</span> <span style=color:#078;font-weight:700>Sub</span><span style=color:#c0f>.</span><span style=color:#033>none</span>
+        }
+
+
+<span style=color:#069;font-weight:700>type</span> <span style=color:#069;font-weight:700>alias</span> <span style=color:#078;font-weight:700>Model</span> <span style=color:#c0f>=</span>
+    <span style=color:#078;font-weight:700>Bool</span>
+
+
+<span style=color:#069;font-weight:700>type</span> <span style=color:#078;font-weight:700>Msg</span>
+    <span style=color:#c0f>=</span> <span style=color:#078;font-weight:700>Toggle</span>
+
+
+<span style=color:#033>init</span> <span style=color:#c0f>:</span> ( <span style=color:#078;font-weight:700>Bool</span>, <span style=color:#078;font-weight:700>Cmd</span> <span style=color:#033>msg</span> )
+<span style=color:#033>init</span> <span style=color:#c0f>=</span>
+    ( <span style=color:#078;font-weight:700>False</span>, <span style=color:#078;font-weight:700>Cmd</span><span style=color:#c0f>.</span><span style=color:#033>none</span> )
+
+
+<span style=color:#033>view</span> <span style=color:#c0f>:</span> <span style=color:#078;font-weight:700>Model</span> <span style=color:#c0f>-&gt;</span> <span style=color:#078;font-weight:700>Html</span> <span style=color:#078;font-weight:700>Msg</span>
+<span style=color:#033>view</span> <span style=color:#033>model</span> <span style=color:#c0f>=</span>
+    <span style=color:#069;font-weight:700>let</span>
+        <span style=color:#033>viewText</span> <span style=color:#c0f>=</span>
+            (<span style=color:#069;font-weight:700>if</span> <span style=color:#033>model</span> <span style=color:#069;font-weight:700>then</span>
+                <span style=color:#c30>&#34;block&#34;</span>
+             <span style=color:#069;font-weight:700>else</span>
+                <span style=color:#c30>&#34;none&#34;</span>
+            )
+                <span style=color:#c0f>|&gt;</span> (<span style=color:#c0f>\</span><span style=color:#033>d</span> <span style=color:#c0f>-&gt;</span> <span style=color:#033>p</span> [ <span style=color:#033>style</span> [ ( <span style=color:#c30>&#34;display&#34;</span>, <span style=color:#033>d</span> ) ] ] [ <span style=color:#033>text</span> <span style=color:#c30>&#34;text&#34;</span> ])
+    <span style=color:#069;font-weight:700>in</span>
+    <span style=color:#033>div</span> []
+        [ <span style=color:#033>h</span><span style=color:#f60>1</span> [] [<span style=color:#033>text</span> <span style=color:#c30>&#34;demo&#34;</span>]
+        , <span style=color:#033>button</span> [ <span style=color:#033>onClick</span> <span style=color:#078;font-weight:700>Toggle</span> ] [ <span style=color:#033>text</span> <span style=color:#c30>&#34;toggle&#34;</span> ]
+        , <span style=color:#033>viewText</span>
+        ]
+
+
+<span style=color:#033>update</span> <span style=color:#c0f>:</span> <span style=color:#078;font-weight:700>Msg</span> <span style=color:#c0f>-&gt;</span> <span style=color:#078;font-weight:700>Model</span> <span style=color:#c0f>-&gt;</span> ( <span style=color:#078;font-weight:700>Model</span>, <span style=color:#078;font-weight:700>Cmd</span> <span style=color:#078;font-weight:700>Msg</span> )
+<span style=color:#033>update</span> <span style=color:#033>msg</span> <span style=color:#033>model</span> <span style=color:#c0f>=</span>
+    ( <span style=color:#033>not</span> <span style=color:#033>model</span>, <span style=color:#078;font-weight:700>Cmd</span><span style=color:#c0f>.</span><span style=color:#033>none</span> )</code></pre></div><p>ここからh1以外のviewの要素と状態更新に関わる部分を別ファイルに切り出す。
+言うまでもなくこの規模のアプリではそんなことをする必要はないけど、規模が大きくなると実質必須となる。</p><div class=highlight><pre style=background-color:#f0f3f3;-moz-tab-size:4;-o-tab-size:4;tab-size:4><code class=language-Toggle.elm data-lang=Toggle.elm><span style=color:#069;font-weight:700>module </span><span style=color:#0a8;font-weight:700>Toggle</span> <span style=color:#033>exposing</span> <span style=color:#c0f>(..)</span>
+
+<span style=color:#069;font-weight:700>import </span><span style=color:#0a8;font-weight:700>Html</span> <span style=color:#033>exposing</span> <span style=color:#c0f>(..)</span>
+<span style=color:#069;font-weight:700>import </span><span style=color:#0a8;font-weight:700>Html.Attributes</span> <span style=color:#033>exposing</span> (<span style=color:#033>style</span>)
+<span style=color:#069;font-weight:700>import </span><span style=color:#0a8;font-weight:700>Html.Events</span> <span style=color:#033>exposing</span> (<span style=color:#033>onClick</span>)
+
+
+<span style=color:#069;font-weight:700>type</span> <span style=color:#069;font-weight:700>alias</span> <span style=color:#078;font-weight:700>Model</span> <span style=color:#c0f>=</span>
+    <span style=color:#078;font-weight:700>Bool</span>
+
+
+<span style=color:#069;font-weight:700>type</span> <span style=color:#078;font-weight:700>Msg</span>
+    <span style=color:#c0f>=</span> <span style=color:#078;font-weight:700>Toggle</span>
+
+
+<span style=color:#033>init</span> <span style=color:#c0f>:</span> ( <span style=color:#078;font-weight:700>Bool</span>, <span style=color:#078;font-weight:700>Cmd</span> <span style=color:#033>msg</span> )
+<span style=color:#033>init</span> <span style=color:#c0f>=</span>
+    ( <span style=color:#078;font-weight:700>False</span>, <span style=color:#078;font-weight:700>Cmd</span><span style=color:#c0f>.</span><span style=color:#033>none</span> )
+
+
+<span style=color:#033>view</span> <span style=color:#c0f>:</span> <span style=color:#078;font-weight:700>Model</span> <span style=color:#c0f>-&gt;</span> <span style=color:#078;font-weight:700>Html</span> <span style=color:#078;font-weight:700>Msg</span>
+<span style=color:#033>view</span> <span style=color:#033>model</span> <span style=color:#c0f>=</span>
+    <span style=color:#069;font-weight:700>let</span>
+        <span style=color:#033>viewText</span> <span style=color:#c0f>=</span>
+            (<span style=color:#069;font-weight:700>if</span> <span style=color:#033>model</span> <span style=color:#069;font-weight:700>then</span>
+                <span style=color:#c30>&#34;block&#34;</span>
+             <span style=color:#069;font-weight:700>else</span>
+                <span style=color:#c30>&#34;none&#34;</span>
+            )
+                <span style=color:#c0f>|&gt;</span> (<span style=color:#c0f>\</span><span style=color:#033>d</span> <span style=color:#c0f>-&gt;</span> <span style=color:#033>p</span> [ <span style=color:#033>style</span> [ ( <span style=color:#c30>&#34;display&#34;</span>, <span style=color:#033>d</span> ) ] ] [ <span style=color:#033>text</span> <span style=color:#c30>&#34;text&#34;</span> ])
+    <span style=color:#069;font-weight:700>in</span>
+    <span style=color:#033>div</span> []
+        [ <span style=color:#033>button</span> [ <span style=color:#033>onClick</span> <span style=color:#078;font-weight:700>Toggle</span> ] [ <span style=color:#033>text</span> <span style=color:#c30>&#34;toggle&#34;</span> ]
+        , <span style=color:#033>viewText</span>
+        ]
+
+
+<span style=color:#033>update</span> <span style=color:#c0f>:</span> <span style=color:#078;font-weight:700>Msg</span> <span style=color:#c0f>-&gt;</span> <span style=color:#078;font-weight:700>Model</span> <span style=color:#c0f>-&gt;</span> ( <span style=color:#078;font-weight:700>Model</span>, <span style=color:#078;font-weight:700>Cmd</span> <span style=color:#078;font-weight:700>Msg</span> )
+<span style=color:#033>update</span> <span style=color:#033>msg</span> <span style=color:#033>model</span> <span style=color:#c0f>=</span>
+    ( <span style=color:#033>not</span> <span style=color:#033>model</span>, <span style=color:#078;font-weight:700>Cmd</span><span style=color:#c0f>.</span><span style=color:#033>none</span> )</code></pre></div><div class=highlight><pre style=background-color:#f0f3f3;-moz-tab-size:4;-o-tab-size:4;tab-size:4><code class=language-Main.elm data-lang=Main.elm><span style=color:#069;font-weight:700>module </span><span style=color:#0a8;font-weight:700>Main</span> <span style=color:#033>exposing</span> <span style=color:#c0f>(..)</span>
+
+<span style=color:#069;font-weight:700>import </span><span style=color:#0a8;font-weight:700>Html</span> <span style=color:#033>exposing</span> <span style=color:#c0f>(..)</span>
+<span style=color:#069;font-weight:700>import </span><span style=color:#0a8;font-weight:700>Toggle</span>
+
+
+<span style=color:#069;font-weight:700>main </span><span style=color:#c0f>:</span> <span style=color:#078;font-weight:700>Program</span> <span style=color:#078;font-weight:700>Never</span> <span style=color:#078;font-weight:700>Model</span> <span style=color:#078;font-weight:700>Msg</span>
+<span style=color:#069;font-weight:700>main </span><span style=color:#c0f>=</span>
+    <span style=color:#033>program</span>
+        { <span style=color:#033>init</span> <span style=color:#c0f>=</span> <span style=color:#033>init</span>
+        , <span style=color:#033>view</span> <span style=color:#c0f>=</span> <span style=color:#033>view</span>
+        , <span style=color:#033>update</span> <span style=color:#c0f>=</span> <span style=color:#033>update</span>
+        , <span style=color:#033>subscriptions</span> <span style=color:#c0f>=</span> <span style=color:#c0f>\</span><span style=color:#033>_</span> <span style=color:#c0f>-&gt;</span> <span style=color:#078;font-weight:700>Sub</span><span style=color:#c0f>.</span><span style=color:#033>none</span>
+        }
+
+
+<span style=color:#069;font-weight:700>type</span> <span style=color:#069;font-weight:700>alias</span> <span style=color:#078;font-weight:700>Model</span> <span style=color:#c0f>=</span>
+    { <span style=color:#033>toggle</span> <span style=color:#c0f>:</span> <span style=color:#078;font-weight:700>Toggle</span><span style=color:#c0f>.</span><span style=color:#078;font-weight:700>Model</span> }
+
+
+<span style=color:#069;font-weight:700>type</span> <span style=color:#078;font-weight:700>Msg</span>
+    <span style=color:#c0f>=</span> <span style=color:#078;font-weight:700>ToggleMsg</span> <span style=color:#078;font-weight:700>Toggle</span><span style=color:#c0f>.</span><span style=color:#078;font-weight:700>Msg</span>
+
+
+<span style=color:#033>init</span> <span style=color:#c0f>:</span> ( <span style=color:#078;font-weight:700>Model</span>, <span style=color:#078;font-weight:700>Cmd</span> <span style=color:#033>msg</span> )
+<span style=color:#033>init</span> <span style=color:#c0f>=</span>
+    ( { <span style=color:#033>toggle</span> <span style=color:#c0f>=</span> <span style=color:#078;font-weight:700>False</span> }, <span style=color:#078;font-weight:700>Cmd</span><span style=color:#c0f>.</span><span style=color:#033>none</span> )
+
+
+<span style=color:#033>view</span> <span style=color:#c0f>:</span> <span style=color:#078;font-weight:700>Model</span> <span style=color:#c0f>-&gt;</span> <span style=color:#078;font-weight:700>Html</span> <span style=color:#078;font-weight:700>Msg</span>
+<span style=color:#033>view</span> <span style=color:#033>model</span> <span style=color:#c0f>=</span>
+    <span style=color:#033>div</span> []
+        [ <span style=color:#033>h</span><span style=color:#f60>1</span> [] [ <span style=color:#033>text</span> <span style=color:#c30>&#34;demo&#34;</span> ]
+        , <span style=color:#078;font-weight:700>Toggle</span><span style=color:#c0f>.</span><span style=color:#033>view</span> <span style=color:#033>model</span><span style=color:#c0f>.</span><span style=color:#033>toggle</span> <span style=color:#c0f>|&gt;</span> <span style=color:#078;font-weight:700>Html</span><span style=color:#c0f>.</span><span style=color:#033>map</span> <span style=color:#078;font-weight:700>ToggleMsg</span>
+        ]
+
+
+<span style=color:#033>update</span> <span style=color:#c0f>:</span> <span style=color:#078;font-weight:700>Msg</span> <span style=color:#c0f>-&gt;</span> <span style=color:#078;font-weight:700>Model</span> <span style=color:#c0f>-&gt;</span> ( <span style=color:#078;font-weight:700>Model</span>, <span style=color:#078;font-weight:700>Cmd</span> <span style=color:#078;font-weight:700>Msg</span> )
+<span style=color:#033>update</span> <span style=color:#033>msg</span> <span style=color:#033>model</span> <span style=color:#c0f>=</span>
+    <span style=color:#069;font-weight:700>case</span> <span style=color:#033>msg</span> <span style=color:#069;font-weight:700>of</span>
+        <span style=color:#078;font-weight:700>ToggleMsg</span> <span style=color:#033>msg_</span> <span style=color:#c0f>-&gt;</span>
+            <span style=color:#069;font-weight:700>let</span>
+                ( <span style=color:#033>m_</span>, <span style=color:#033>cmd</span> ) <span style=color:#c0f>=</span>
+                    <span style=color:#078;font-weight:700>Toggle</span><span style=color:#c0f>.</span><span style=color:#033>update</span> <span style=color:#033>msg_</span> <span style=color:#033>model</span><span style=color:#c0f>.</span><span style=color:#033>toggle</span>
+            <span style=color:#069;font-weight:700>in</span>
+            ( { <span style=color:#033>model</span> <span style=color:#c0f>|</span> <span style=color:#033>toggle</span> <span style=color:#c0f>=</span> <span style=color:#033>m_</span> }, <span style=color:#078;font-weight:700>Cmd</span><span style=color:#c0f>.</span><span style=color:#033>map</span> <span style=color:#078;font-weight:700>ToggleMsg</span> <span style=color:#033>cmd</span> )</code></pre></div><p>Toggle.elmを作って、Model, Msgとviewの一部を別モジュールとしMain.elmから呼び出すようにした。
+今回は外部モジュールも状態も1つだけだが、複数になることを想定してModelやMsgを定義しなおした。
+Msgを上記のように定義しておくと、呼び出すビューが増えた場合も</p><div class=highlight><pre style=background-color:#f0f3f3;-moz-tab-size:4;-o-tab-size:4;tab-size:4><code class=language-elm data-lang=elm><span style=color:#069;font-weight:700>type</span> <span style=color:#078;font-weight:700>Msg</span> <span style=color:#c0f>=</span>
+    <span style=color:#078;font-weight:700>ToggleMsg</span> <span style=color:#078;font-weight:700>Toggle</span><span style=color:#c0f>.</span><span style=color:#078;font-weight:700>Msg</span>
+    <span style=color:#c0f>|</span> <span style=color:#078;font-weight:700>HogeMsg</span> <span style=color:#078;font-weight:700>Hoge</span><span style=color:#c0f>.</span><span style=color:#078;font-weight:700>Msg</span></code></pre></div><p>というかたちで拡張しやすく、updateも書きやすい。
+ただ、<code>Toggle.update</code>は<code>Toggle.Msg -&gt; Toggle.Model -&gt; (Toggle.Model, Cmd Toggle.Msg)</code>という定義になっているので、Mainモジュールのupdateとは型が合わない。</p><p>そこで<code>Cmd.map</code>の出番となる。
+mapという名前から大方予想はつくと思うけど、型はこうなっている（<a href=http://package.elm-lang.org/packages/elm-lang/core/5.1.1/Platform-Cmd#map>elm-packageのドキュメント</a>）。</p><p><code>(a -&gt; msg) -&gt; Cmd a -&gt; Cmd msg</code></p><p>ToggleMsgは<code>Toggle.Msg -&gt; Msg</code>と定義されているので、Main.update関数の<code>Cmd.map ToggleMsg cmd</code>という式は<code>Cmd Main.Msg</code>を返す。
+viewについても同様で、Toggle.viewの戻り値が<code>Html Toggle.Msg</code>なので<code>Html.map</code>で置換してあげる。</p><p>Html.mapについては<a href=http://package.elm-lang.org/packages/elm-lang/html/latest/Html#map>ドキュメント</a>で少し説明があるけど、Cmd.mapは公式情報がないような。
+若い言語なので情報不足は否めない。</p><p>なお、モジュールの切り分け方は<a href=https://github.com/rtfeldman/elm-spa-example>elm-spa-sample</a>を参考にした。
+しかしいきなりこれに当たるのはヘビーなんだよな……。</p><div class=blog-tags><a href=https://m-shaka.github.io/blog/tags/elm/>Elm</a>&nbsp;</div></article><ul class="pager blog-pager"><li class=previous><a href=https://m-shaka.github.io/blog/post/2018/02/elm-boolean-parser-3/ data-toggle=tooltip data-placement=top title=ElmのParserライブラリで論理演算(3)>&larr; Previous Post</a></li><li class=next><a href=https://m-shaka.github.io/blog/post/2019/02/persistent-test-db/ data-toggle=tooltip data-placement=top title=Persistentでテスト時だけSqliteを使う>Next Post &rarr;</a></li></ul><div class=disqus-comments><div id=disqus_thread></div><script type=application/javascript>var disqus_config=function(){};(function(){if(["localhost","127.0.0.1"].indexOf(window.location.hostname)!=-1){document.getElementById('disqus_thread').innerHTML='Disqus comments not available by default when the website is previewed locally.';return;}
+var d=document,s=d.createElement('script');s.async=true;s.src='//'+"m-shaka-blog"+'.disqus.com/embed.js';s.setAttribute('data-timestamp',+new Date());(d.head||d.body).appendChild(s);})();</script><noscript>Please enable JavaScript to view the <a href=https://disqus.com/?ref_noscript>comments powered by Disqus.</a></noscript><a href=https://disqus.com class=dsq-brlink>comments powered by <span class=logo-disqus>Disqus</span></a></div></div></div></div><footer><div class=container><div class=row><div class="col-lg-8 col-lg-offset-2 col-md-10 col-md-offset-1"><ul class="list-inline text-center footer-links"><li><a href=https://github.com/m-shaka title=GitHub><span class="fa-stack fa-lg"><i class="fas fa-circle fa-stack-2x"></i><i class="fab fa-github fa-stack-1x fa-inverse"></i></span></a></li><li><a href=https://twitter.com/schwer_metall title=Twitter><span class="fa-stack fa-lg"><i class="fas fa-circle fa-stack-2x"></i><i class="fab fa-twitter fa-stack-1x fa-inverse"></i></span></a></li></ul><p class="credits copyright text-muted">m-shaka
+&nbsp;&bull;&nbsp;&copy;
+2021
+&nbsp;&bull;&nbsp;
+<a href=https://m-shaka.github.io/blog>m-shaka&#39;s blog</a></p><p class="credits theme-by text-muted"><a href=http://gohugo.io>Hugo v0.50</a> powered &nbsp;&bull;&nbsp; Theme by <a href=http://deanattali.com/beautiful-jekyll/>Beautiful Jekyll</a> adapted to <a href=https://github.com/halogenica/beautifulhugo>Beautiful Hugo</a></p></div></div></div></footer><script src=https://cdnjs.cloudflare.com/ajax/libs/KaTeX/0.10.0/katex.min.js integrity=sha384-K3vbOmF2BtaVai+Qk37uypf7VrgBubhQreNQe9aGsz9lB63dIFiQVlJbr92dw2Lx crossorigin=anonymous></script><script src=https://cdnjs.cloudflare.com/ajax/libs/KaTeX/0.10.0/contrib/auto-render.min.js integrity=sha384-kmZOZB5ObwgQnS/DuDg6TScgOiWWBiVt0plIRkZCmE6rDZGrEOQeHM5PcHi+nyqe crossorigin=anonymous></script><script src=https://code.jquery.com/jquery-1.12.4.min.js integrity="sha256-ZosEbRLbNQzLpnKIkEdrPv7lOy9C27hHQ+Xp8a4MxAQ=" crossorigin=anonymous></script><script src=https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/js/bootstrap.min.js integrity=sha384-Tc5IQib027qvyjSMfHjOMaLkfuWVxZxUPnCJA7l2mCWNIpG9mGCD8wGNIcPD7Txa crossorigin=anonymous></script><script src=https://m-shaka.github.io/blog/js/main.js></script><script>renderMathInElement(document.body);</script><script src=https://cdnjs.cloudflare.com/ajax/libs/photoswipe/4.1.2/photoswipe.min.js integrity=sha384-QELNnmcmU8IR9ZAykt67vGr9/rZJdHbiWi64V88fCPaOohUlHCqUD/unNN0BXSqy crossorigin=anonymous></script><script src=https://cdnjs.cloudflare.com/ajax/libs/photoswipe/4.1.2/photoswipe-ui-default.min.js integrity=sha384-m67o7SkQ1ALzKZIFh4CiTA8tmadaujiTa9Vu+nqPSwDOqHrDmxLezTdFln8077+q crossorigin=anonymous></script><script src=https://m-shaka.github.io/blog/js/load-photoswipe.js></script><script type=text/x-mathjax-config>
+  MathJax.Hub.Config({
+      tex2jax: { inlineMath: [['$','$'], ["\\(","\\)"]] }
+  });
+</script><script type=text/javascript src="https://cdn.mathjax.org/mathjax/latest/MathJax.js?config=TeX-AMS-MML_HTMLorMML"></script></body></html>
